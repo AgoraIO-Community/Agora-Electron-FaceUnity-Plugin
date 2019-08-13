@@ -1,0 +1,458 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0315A29122F9B69200B10F6C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03858EB122F9B5FA000B3983 /* AVFoundation.framework */; };
+		033C828722FDAFB300ABB9EE /* FaceUnityPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 033C828522FDAFB200ABB9EE /* FaceUnityPlugin.h */; };
+		033C828822FDAFB300ABB9EE /* FaceUnityPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033C828622FDAFB300ABB9EE /* FaceUnityPlugin.cpp */; };
+		033C828A22FDAFC000ABB9EE /* IVideoFramePlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 033C828922FDAFC000ABB9EE /* IVideoFramePlugin.h */; };
+		033C829322FDB14C00ABB9EE /* libnama.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 033C829222FDB14C00ABB9EE /* libnama.a */; };
+		033C829422FDB18F00ABB9EE /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033C828E22FDAFC900ABB9EE /* Utils.cpp */; };
+		03858EB022F9AE14000B3983 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03858EAF22F9AE14000B3983 /* OpenGL.framework */; };
+		0399D51222F9B6B7005B129E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0399D51122F9B6B7005B129E /* CoreMedia.framework */; };
+		03F0143022F9B71500ED4A1A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F0142F22F9B71500ED4A1A /* CoreVideo.framework */; };
+		03F0143222F9B83A00ED4A1A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F0143122F9B83A00ED4A1A /* CoreFoundation.framework */; };
+		03F0143422F9B86D00ED4A1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F0143322F9B86D00ED4A1A /* Foundation.framework */; };
+		03F0143622F9B89600ED4A1A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F0143522F9B89500ED4A1A /* Accelerate.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		033C828522FDAFB200ABB9EE /* FaceUnityPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FaceUnityPlugin.h; path = ../FaceUnityPlugin.h; sourceTree = "<group>"; };
+		033C828622FDAFB300ABB9EE /* FaceUnityPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FaceUnityPlugin.cpp; path = ../FaceUnityPlugin.cpp; sourceTree = "<group>"; };
+		033C828922FDAFC000ABB9EE /* IVideoFramePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IVideoFramePlugin.h; path = ../IVideoFramePlugin.h; sourceTree = "<group>"; };
+		033C828C22FDAFC900ABB9EE /* FUConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FUConfig.h; sourceTree = "<group>"; };
+		033C828D22FDAFC900ABB9EE /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		033C828E22FDAFC900ABB9EE /* Utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
+		033C829222FDB14C00ABB9EE /* libnama.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnama.a; path = ../FULive/mac/lib/libnama.a; sourceTree = "<group>"; };
+		033C82BD2302878100ABB9EE /* fwd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fwd.h; sourceTree = "<group>"; };
+		033C82BE2302878100ABB9EE /* memorystream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = memorystream.h; sourceTree = "<group>"; };
+		033C82BF2302878100ABB9EE /* reader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
+		033C82C02302878100ABB9EE /* prettywriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prettywriter.h; sourceTree = "<group>"; };
+		033C82C12302878100ABB9EE /* ostreamwrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ostreamwrapper.h; sourceTree = "<group>"; };
+		033C82C22302878100ABB9EE /* encodedstream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = encodedstream.h; sourceTree = "<group>"; };
+		033C82C32302878100ABB9EE /* filereadstream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = filereadstream.h; sourceTree = "<group>"; };
+		033C82C42302878100ABB9EE /* istreamwrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = istreamwrapper.h; sourceTree = "<group>"; };
+		033C82C52302878100ABB9EE /* stringbuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
+		033C82C72302878100ABB9EE /* ieee754.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ieee754.h; sourceTree = "<group>"; };
+		033C82C82302878100ABB9EE /* strtod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = strtod.h; sourceTree = "<group>"; };
+		033C82C92302878100ABB9EE /* swap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = swap.h; sourceTree = "<group>"; };
+		033C82CA2302878100ABB9EE /* regex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = regex.h; sourceTree = "<group>"; };
+		033C82CB2302878100ABB9EE /* diyfp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = diyfp.h; sourceTree = "<group>"; };
+		033C82CC2302878100ABB9EE /* biginteger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = biginteger.h; sourceTree = "<group>"; };
+		033C82CD2302878100ABB9EE /* strfunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = strfunc.h; sourceTree = "<group>"; };
+		033C82CE2302878100ABB9EE /* itoa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = itoa.h; sourceTree = "<group>"; };
+		033C82CF2302878100ABB9EE /* stack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack.h; sourceTree = "<group>"; };
+		033C82D02302878100ABB9EE /* dtoa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dtoa.h; sourceTree = "<group>"; };
+		033C82D12302878100ABB9EE /* meta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = meta.h; sourceTree = "<group>"; };
+		033C82D22302878100ABB9EE /* pow10.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pow10.h; sourceTree = "<group>"; };
+		033C82D32302878100ABB9EE /* encodings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = encodings.h; sourceTree = "<group>"; };
+		033C82D42302878100ABB9EE /* schema.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = schema.h; sourceTree = "<group>"; };
+		033C82D52302878100ABB9EE /* stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stream.h; sourceTree = "<group>"; };
+		033C82D62302878100ABB9EE /* filewritestream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = filewritestream.h; sourceTree = "<group>"; };
+		033C82D72302878100ABB9EE /* rapidjson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rapidjson.h; sourceTree = "<group>"; };
+		033C82D82302878100ABB9EE /* document.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
+		033C82D92302878100ABB9EE /* allocators.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = allocators.h; sourceTree = "<group>"; };
+		033C82DA2302878100ABB9EE /* writer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
+		033C82DC2302878100ABB9EE /* error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
+		033C82DD2302878100ABB9EE /* en.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = en.h; sourceTree = "<group>"; };
+		033C82DE2302878100ABB9EE /* memorybuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = memorybuffer.h; sourceTree = "<group>"; };
+		033C82DF2302878100ABB9EE /* pointer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pointer.h; sourceTree = "<group>"; };
+		033C82E12302878100ABB9EE /* inttypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = inttypes.h; sourceTree = "<group>"; };
+		033C82E22302878100ABB9EE /* stdint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdint.h; sourceTree = "<group>"; };
+		03858EAF22F9AE14000B3983 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		03858EB122F9B5FA000B3983 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0399D51122F9B6B7005B129E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		03D53AD022F98E4F0064D073 /* libFaceUnityPlugin.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libFaceUnityPlugin.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		03F0142F22F9B71500ED4A1A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		03F0143122F9B83A00ED4A1A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		03F0143322F9B86D00ED4A1A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		03F0143522F9B89500ED4A1A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03D53ACE22F98E4F0064D073 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03F0143622F9B89600ED4A1A /* Accelerate.framework in Frameworks */,
+				03F0143422F9B86D00ED4A1A /* Foundation.framework in Frameworks */,
+				03F0143222F9B83A00ED4A1A /* CoreFoundation.framework in Frameworks */,
+				03F0143022F9B71500ED4A1A /* CoreVideo.framework in Frameworks */,
+				033C829322FDB14C00ABB9EE /* libnama.a in Frameworks */,
+				0399D51222F9B6B7005B129E /* CoreMedia.framework in Frameworks */,
+				0315A29122F9B69200B10F6C /* AVFoundation.framework in Frameworks */,
+				03858EB022F9AE14000B3983 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		033C828B22FDAFC900ABB9EE /* common */ = {
+			isa = PBXGroup;
+			children = (
+				033C82BC2302878100ABB9EE /* rapidjson */,
+				033C828C22FDAFC900ABB9EE /* FUConfig.h */,
+				033C828D22FDAFC900ABB9EE /* Utils.h */,
+				033C828E22FDAFC900ABB9EE /* Utils.cpp */,
+			);
+			name = common;
+			path = ../common;
+			sourceTree = "<group>";
+		};
+		033C82BC2302878100ABB9EE /* rapidjson */ = {
+			isa = PBXGroup;
+			children = (
+				033C82BD2302878100ABB9EE /* fwd.h */,
+				033C82BE2302878100ABB9EE /* memorystream.h */,
+				033C82BF2302878100ABB9EE /* reader.h */,
+				033C82C02302878100ABB9EE /* prettywriter.h */,
+				033C82C12302878100ABB9EE /* ostreamwrapper.h */,
+				033C82C22302878100ABB9EE /* encodedstream.h */,
+				033C82C32302878100ABB9EE /* filereadstream.h */,
+				033C82C42302878100ABB9EE /* istreamwrapper.h */,
+				033C82C52302878100ABB9EE /* stringbuffer.h */,
+				033C82C62302878100ABB9EE /* internal */,
+				033C82D32302878100ABB9EE /* encodings.h */,
+				033C82D42302878100ABB9EE /* schema.h */,
+				033C82D52302878100ABB9EE /* stream.h */,
+				033C82D62302878100ABB9EE /* filewritestream.h */,
+				033C82D72302878100ABB9EE /* rapidjson.h */,
+				033C82D82302878100ABB9EE /* document.h */,
+				033C82D92302878100ABB9EE /* allocators.h */,
+				033C82DA2302878100ABB9EE /* writer.h */,
+				033C82DB2302878100ABB9EE /* error */,
+				033C82DE2302878100ABB9EE /* memorybuffer.h */,
+				033C82DF2302878100ABB9EE /* pointer.h */,
+				033C82E02302878100ABB9EE /* msinttypes */,
+			);
+			path = rapidjson;
+			sourceTree = "<group>";
+		};
+		033C82C62302878100ABB9EE /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				033C82C72302878100ABB9EE /* ieee754.h */,
+				033C82C82302878100ABB9EE /* strtod.h */,
+				033C82C92302878100ABB9EE /* swap.h */,
+				033C82CA2302878100ABB9EE /* regex.h */,
+				033C82CB2302878100ABB9EE /* diyfp.h */,
+				033C82CC2302878100ABB9EE /* biginteger.h */,
+				033C82CD2302878100ABB9EE /* strfunc.h */,
+				033C82CE2302878100ABB9EE /* itoa.h */,
+				033C82CF2302878100ABB9EE /* stack.h */,
+				033C82D02302878100ABB9EE /* dtoa.h */,
+				033C82D12302878100ABB9EE /* meta.h */,
+				033C82D22302878100ABB9EE /* pow10.h */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		033C82DB2302878100ABB9EE /* error */ = {
+			isa = PBXGroup;
+			children = (
+				033C82DC2302878100ABB9EE /* error.h */,
+				033C82DD2302878100ABB9EE /* en.h */,
+			);
+			path = error;
+			sourceTree = "<group>";
+		};
+		033C82E02302878100ABB9EE /* msinttypes */ = {
+			isa = PBXGroup;
+			children = (
+				033C82E12302878100ABB9EE /* inttypes.h */,
+				033C82E22302878100ABB9EE /* stdint.h */,
+			);
+			path = msinttypes;
+			sourceTree = "<group>";
+		};
+		03858EAE22F9AE14000B3983 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				03F0143522F9B89500ED4A1A /* Accelerate.framework */,
+				03F0143322F9B86D00ED4A1A /* Foundation.framework */,
+				03F0143122F9B83A00ED4A1A /* CoreFoundation.framework */,
+				03F0142F22F9B71500ED4A1A /* CoreVideo.framework */,
+				0399D51122F9B6B7005B129E /* CoreMedia.framework */,
+				03858EB122F9B5FA000B3983 /* AVFoundation.framework */,
+				03858EAF22F9AE14000B3983 /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		03D53AC722F98E4F0064D073 = {
+			isa = PBXGroup;
+			children = (
+				033C828622FDAFB300ABB9EE /* FaceUnityPlugin.cpp */,
+				033C828522FDAFB200ABB9EE /* FaceUnityPlugin.h */,
+				033C828922FDAFC000ABB9EE /* IVideoFramePlugin.h */,
+				033C829222FDB14C00ABB9EE /* libnama.a */,
+				033C828B22FDAFC900ABB9EE /* common */,
+				03D53AD122F98E4F0064D073 /* Products */,
+				03858EAE22F9AE14000B3983 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		03D53AD122F98E4F0064D073 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03D53AD022F98E4F0064D073 /* libFaceUnityPlugin.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		03D53ACC22F98E4F0064D073 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				033C828722FDAFB300ABB9EE /* FaceUnityPlugin.h in Headers */,
+				033C828A22FDAFC000ABB9EE /* IVideoFramePlugin.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		03D53ACF22F98E4F0064D073 /* FaceUnityPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03D53AD422F98E4F0064D073 /* Build configuration list for PBXNativeTarget "FaceUnityPlugin" */;
+			buildPhases = (
+				03D53ACC22F98E4F0064D073 /* Headers */,
+				03D53ACD22F98E4F0064D073 /* Sources */,
+				03D53ACE22F98E4F0064D073 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FaceUnityPlugin;
+			productName = FaceUnityPlugin;
+			productReference = 03D53AD022F98E4F0064D073 /* libFaceUnityPlugin.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		03D53AC822F98E4F0064D073 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Agora Corp";
+				TargetAttributes = {
+					03D53ACF22F98E4F0064D073 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = 03D53ACB22F98E4F0064D073 /* Build configuration list for PBXProject "FaceUnityPlugin" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 03D53AC722F98E4F0064D073;
+			productRefGroup = 03D53AD122F98E4F0064D073 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03D53ACF22F98E4F0064D073 /* FaceUnityPlugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03D53ACD22F98E4F0064D073 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				033C828822FDAFB300ABB9EE /* FaceUnityPlugin.cpp in Sources */,
+				033C829422FDB18F00ABB9EE /* Utils.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		03D53AD222F98E4F0064D073 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		03D53AD322F98E4F0064D073 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		03D53AD522F98E4F0064D073 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = "${SRCROOT}/../FULive/mac/Headers";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../FULive/mac/lib",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		03D53AD622F98E4F0064D073 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = "${SRCROOT}/../FULive/mac/Headers";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../FULive/mac/lib",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03D53ACB22F98E4F0064D073 /* Build configuration list for PBXProject "FaceUnityPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03D53AD222F98E4F0064D073 /* Debug */,
+				03D53AD322F98E4F0064D073 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03D53AD422F98E4F0064D073 /* Build configuration list for PBXNativeTarget "FaceUnityPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03D53AD522F98E4F0064D073 /* Debug */,
+				03D53AD622F98E4F0064D073 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 03D53AC822F98E4F0064D073 /* Project object */;
+}
