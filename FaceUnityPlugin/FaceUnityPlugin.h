@@ -68,4 +68,13 @@ protected:
     double is_beauty_on = 1.0;
 };
 
+#define READ_DOUBLE_VALUE_PARAM(d, name, newvalue) \
+if(d.HasMember(name)) { \
+    Value& value = d[name]; \
+    if(!value.IsNumber()) { \
+        return false; \
+    } \
+    newvalue = value.GetDouble(); \
+}
+
 #endif /* FaceUnityPlugin_h */

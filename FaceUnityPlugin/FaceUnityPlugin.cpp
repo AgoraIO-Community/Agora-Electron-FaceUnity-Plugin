@@ -273,21 +273,63 @@ bool FaceUnityPlugin::disable()
     return true;
 }
 
+
 bool FaceUnityPlugin::setParameter(const char *param)
 {
     Document d;
     d.Parse(param);
     
-    const Value& authdata = d["plugin.fu.authdata"];
-    if(!authdata.IsNull() && authdata.IsArray()) {
+    if(d.HasParseError()) {
+        return false;
+    }
+    
+    
+    if(d.HasMember("plugin.fu.authdata")) {
+        Value& authdata = d["plugin.fu.authdata"];
+        if(!authdata.IsArray()) {
+            return false;
+        }
         auth_package_size = authdata.Capacity();
         auth_package = new char[auth_package_size];
         authdata.GetArray();
         for (int i = 0; i < auth_package_size; i++) {
             auth_package[i] = authdata[i].GetInt();
         }
-        return true;
     }
+    
+    if(d.HasMember("plugin.fu.param.filter_name")) {
+        Value& value = d["plugin.fu.param.filter_name"];
+        if(!value.IsString()) {
+            return false;
+        }
+        std::string sName(value.GetString());
+        filter_name = sName;
+    }
+    
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.filter_level", filter_level)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.color_level", color_level)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.red_level", red_level)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.blur_level", blur_level)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.skin_detect", skin_detect)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.nonshin_blur_scale", nonshin_blur_scale)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.heavy_blur", heavy_blur)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.face_shape", face_shape)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.face_shape_level", face_shape_level)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.eye_enlarging", eye_enlarging)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_thinning", cheek_thinning)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_v", cheek_v)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_narrow", cheek_narrow)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_small", cheek_small)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_oval", cheek_oval)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_nose", intensity_nose)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_forehead", intensity_forehead)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_mouth", intensity_mouth)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_forehead", intensity_forehead)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_chin", intensity_chin)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.change_frames", change_frames)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.eye_bright", eye_bright)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.tooth_whiten", tooth_whiten)
+    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.is_beauty_on", is_beauty_on)
     
     return false;
 }
