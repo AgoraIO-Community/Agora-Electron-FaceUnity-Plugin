@@ -442,6 +442,12 @@ bool FaceUnityPlugin::setParameter(const char *param)
 
 void FaceUnityPlugin::release()
 {
+    fuOnDeviceLost();
+    fuDestroyAllItems();
+    mNamaInited = false;
+    mNeedUpdateFUOptions = true;
+    delete[] auth_package;
+    folderPath = "";
 }
 
 IVideoFramePlugin* createVideoFramePlugin()
