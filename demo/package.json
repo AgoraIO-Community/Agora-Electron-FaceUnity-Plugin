@@ -1,0 +1,37 @@
+{
+  "name": "electron-webpack-quick-start",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.0.2",
+    "@material-ui/icons": "^4.1.0",
+    "agora-electron-sdk": "^2.3.4-hotfix.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^3.1.1",
+    "source-map-support": "^0.5.12"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
+    "@types/jest": "24.0.13",
+    "@types/node": "12.0.7",
+    "@types/react": "16.8.19",
+    "@types/react-dom": "16.8.4",
+    "electron": "5.0.8",
+    "electron-builder": "^21.0.11",
+    "electron-webpack": "^2.7.4",
+    "electron-webpack-ts": "^3.2.0",
+    "typescript": "^3.5.3",
+    "webpack": "~4.35.3"
+  },
+  "agora_electron": {
+    "prebuilt": true,
+    "electron_version": "5.0.8"
+  }
+}
