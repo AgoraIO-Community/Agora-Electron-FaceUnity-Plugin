@@ -330,6 +330,9 @@ bool FaceUnityPlugin::setParameter(const char *param)
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.eye_bright", eye_bright)
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.tooth_whiten", tooth_whiten)
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.is_beauty_on", is_beauty_on)
+
+    // reset mNeedUpdateFUOptions
+    mNeedUpdateFUOptions = true
     
     return false;
 }
