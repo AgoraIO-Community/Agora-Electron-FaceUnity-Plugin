@@ -22,6 +22,7 @@
 #else
 #include <dlfcn.h>
 #include <OpenGL/OpenGL.h>
+#include <unistd.h>
 #endif // WIN32
 
 
@@ -146,20 +147,22 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         return false;
     }
     do {
-        // 1. check if thread changed, if yes, reinit opengl
-#if defined(_WIN32)
-		int currentThreadId = GetCurrentThreadId();
-		if (currentThreadId != videoFrameThreadId) {
-			if (mNamaInited) {
-				fuOnCameraChange();
-				fuOnDeviceLost();
-				fuDestroyAllItems();
-				mNamaInited = false;
-				mNeedUpdateFUOptions = true;
-			}
-		}
-		videoFrameThreadId = currentThreadId;
-#endif
+        // 0. check if need to clean up fu
+        if (status == FACEUNITY_PLUGIN_STATUS_STOPPING) {
+            fuDestroyAllItems();
+            fuOnDeviceLost();
+            fuOnCameraChange();
+            fuDestroyLibData();
+            mNamaInited = false;
+            mNeedUpdateFUOptions = true;
+            status = FACEUNITY_PLUGIN_STATUS_STOPPED;
+        }
+        
+        if(status == FACEUNITY_PLUGIN_STATUS_STOPPED) {
+            break;
+        }
+        
+        
         // 2. initialize if not yet done
         if (!mNamaInited) {
             //load nama and initialize
@@ -243,6 +246,7 @@ bool FaceUnityPlugin::load(const char *path)
     folderPath = sPath;
     
     mLoaded = true;
+    status = FACEUNITY_PLUGIN_STATUS_STARTED;
     return true;
 }
 
@@ -306,6 +310,18 @@ bool FaceUnityPlugin::setParameter(const char *param)
         filter_name = sName;
     }
     
+    if(d.HasMember("plugin.fu.switch_camera")) {
+        Value& value = d["plugin.fu.switch_camera"];
+        if(!value.IsBool()) {
+            return false;
+        }
+        if(value.GetBool()) {
+            status = FACEUNITY_PLUGIN_STATUS_STOPPING;
+        } else {
+            status = FACEUNITY_PLUGIN_STATUS_STARTED;
+        }
+    }
+    
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.filter_level", filter_level)
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.color_level", color_level)
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.red_level", red_level)
@@ -336,112 +352,6 @@ bool FaceUnityPlugin::setParameter(const char *param)
     
     return false;
 }
-
-
-//bool FaceUnityPlugin::setBoolParameter(const char *param, bool value)
-//{
-//    return false;
-//}
-//
-//bool FaceUnityPlugin::setStringParameter(const char *param, const char *value)
-//{
-//    std::string strParam = param;
-//    if (strParam.compare("plugin.fu.authdata") == 0) {
-//        auth_package = new char[auth_package_size];
-//        memcpy(auth_package, value, auth_package_size);
-//        return true;
-//    } else if (strParam.compare("plugin.fu.param.filter_name") == 0) {
-//        filter_name = value;
-//        return true;
-//    }
-//    return false;
-//}
-//
-//bool FaceUnityPlugin::setIntParameter(const char *param, int32_t value)
-//{
-//    std::string strParam = param;
-//    if (strParam.compare("plugin.fu.authdata.size") == 0) {
-//        auth_package_size = value;
-//        return true;
-//    }
-//    return false;
-//}
-//
-//bool FaceUnityPlugin::setDoubleParameter(const char *param, double value)
-//{
-//    std::string strParam = param;
-//    if (strParam.compare("plugin.fu.param.filter_level") == 0) {
-//        filter_level = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.color_level") == 0) {
-//        color_level = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.red_level") == 0) {
-//        red_level = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.blur_level") == 0) {
-//        blur_level = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.skin_detect") == 0) {
-//        skin_detect = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.nonshin_blur_scale") == 0) {
-//        nonshin_blur_scale = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.heavy_blur") == 0) {
-//        heavy_blur = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.face_shape") == 0) {
-//        face_shape = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.face_shape_level") == 0) {
-//        face_shape_level = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.eye_enlarging") == 0) {
-//        eye_enlarging = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.cheek_thinning") == 0) {
-//        cheek_thinning = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.cheek_v") == 0) {
-//        cheek_v = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.cheek_narrow") == 0) {
-//        cheek_narrow = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.cheek_small") == 0) {
-//        cheek_small = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.cheek_oval") == 0) {
-//        cheek_oval = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.intensity_nose") == 0) {
-//        intensity_nose = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.intensity_forehead") == 0) {
-//        intensity_forehead = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.intensity_mouth") == 0) {
-//        intensity_mouth = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.intensity_chin") == 0) {
-//        intensity_chin = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.change_frames") == 0) {
-//        change_frames = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.eye_bright") == 0) {
-//        eye_bright = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.tooth_whiten") == 0) {
-//        tooth_whiten = value;
-//        return true;
-//    } else if(strParam.compare("plugin.fu.param.is_beauty_on") == 0) {
-//        is_beauty_on = value;
-//        return true;
-//    }
-//    return false;
-//}
 
 void FaceUnityPlugin::release()
 {

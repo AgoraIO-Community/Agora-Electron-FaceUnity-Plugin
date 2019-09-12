@@ -11,8 +11,15 @@
 
 #include "IVideoFramePlugin.h"
 #include <string>
+#include <thread>
 #include "FUConfig.h"
 
+enum FaceUnityPluginStatus
+{
+    FACEUNITY_PLUGIN_STATUS_STOPPED = 0,
+    FACEUNITY_PLUGIN_STATUS_STOPPING = 1,
+    FACEUNITY_PLUGIN_STATUS_STARTED = 2
+};
 
 class FaceUnityPlugin : public IVideoFramePlugin
 {
@@ -37,9 +44,14 @@ protected:
     std::string folderPath;
     char* auth_package;
     int auth_package_size;
+#if defined(_WIN32)
     int videoFrameThreadId;
+#else
+    pthread_t previousThreadId;
+#endif
     bool mNeedUpdateFUOptions = true;
     bool mLoaded = false;
+    FaceUnityPluginStatus status = FACEUNITY_PLUGIN_STATUS_STOPPED;
     
     
     std::string filter_name = "origin";
