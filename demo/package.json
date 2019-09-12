@@ -14,7 +14,6 @@
     "agora-electron-sdk": "^2.3.4-hotfix.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "^3.1.1",
     "source-map-support": "^0.5.12"
   },
   "devDependencies": {
@@ -28,7 +27,7 @@
     "electron-webpack": "^2.7.4",
     "electron-webpack-ts": "^3.2.0",
     "typescript": "^3.5.3",
-    "webpack": "~4.35.3"
+    "webpack": "^4.39.3"
   },
   "agora_electron": {
     "prebuilt": true,
