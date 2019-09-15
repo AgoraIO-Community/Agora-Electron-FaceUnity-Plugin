@@ -13,7 +13,6 @@
 #include "Utils.h"
 #include <stdlib.h>
 #include <iostream>
-#include "common/rapidjson/document.h"
 #ifdef _WIN32
 #include "windows.h"
 #pragma comment(lib, "nama.lib")
@@ -27,12 +26,11 @@
 
 
 #define MAX_PATH 512
+#define MAX_PROPERTY_NAME 256
+#define MAX_PROPERTY_VALUE 512
 
 static bool mNamaInited = false;
 static int mFrameID = 0;
-static int mBeautyHandles = 0;
-
-using namespace rapidjson;
 
 #if defined(_WIN32)
 PIXELFORMATDESCRIPTOR pfd = {
@@ -166,7 +164,6 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         // 2. initialize if not yet done
         if (!mNamaInited) {
             //load nama and initialize
-            std::string sub = "agora_node_ext.node";
             std::string assets_dir = folderPath + assets_dir_name + file_separator;
             std::string g_fuDataDir = assets_dir;
             std::vector<char> v3data;
@@ -176,58 +173,86 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
             initOpenGL();
             //CheckGLContext();
             fuSetup(reinterpret_cast<float*>(&v3data[0]), v3data.size(), NULL, auth_package, auth_package_size);
-            
-            std::vector<char> propData;
-            if (false == Utils::LoadBundle(g_fuDataDir + g_faceBeautification, propData)) {
-                std::cout << "load face beautification data failed." << std::endl;
-                break;
-            }
-            std::cout << "load face beautification data." << std::endl;
-            
-            mBeautyHandles = fuCreateItemFromPackage(&propData[0], propData.size());
             mNamaInited = true;
         }
         
         
         // 3. beauty params
         // check if options needs to be updated
-        if (mNeedUpdateFUOptions) {
-            fuItemSetParams(mBeautyHandles, "filter_name", const_cast<char*>(filter_name.c_str()));
-            fuItemSetParamd(mBeautyHandles, "filter_level", filter_level);
-            fuItemSetParamd(mBeautyHandles, "color_level", color_level);
-            fuItemSetParamd(mBeautyHandles, "red_level", red_level);
-            fuItemSetParamd(mBeautyHandles, "blur_level", blur_level);
-            fuItemSetParamd(mBeautyHandles, "skin_detect", skin_detect);
-            fuItemSetParamd(mBeautyHandles, "nonshin_blur_scale", nonshin_blur_scale);
-            fuItemSetParamd(mBeautyHandles, "heavy_blur", heavy_blur);
-            fuItemSetParamd(mBeautyHandles, "face_shape", face_shape);
-            fuItemSetParamd(mBeautyHandles, "face_shape_level", face_shape_level);
-            fuItemSetParamd(mBeautyHandles, "eye_enlarging", eye_enlarging);
-            fuItemSetParamd(mBeautyHandles, "cheek_thinning", cheek_thinning);
-            fuItemSetParamd(mBeautyHandles, "cheek_v", cheek_v);
-            fuItemSetParamd(mBeautyHandles, "cheek_narrow", cheek_narrow);
-            fuItemSetParamd(mBeautyHandles, "cheek_small", cheek_small);
-            fuItemSetParamd(mBeautyHandles, "cheek_oval", cheek_oval);
-            fuItemSetParamd(mBeautyHandles, "intensity_nose", intensity_nose);
-            fuItemSetParamd(mBeautyHandles, "intensity_forehead", intensity_forehead);
-            fuItemSetParamd(mBeautyHandles, "intensity_mouth", intensity_mouth);
-            fuItemSetParamd(mBeautyHandles, "intensity_chin", intensity_chin);
-            fuItemSetParamd(mBeautyHandles, "change_frames", change_frames);
-            fuItemSetParamd(mBeautyHandles, "eye_bright", eye_bright);
-            fuItemSetParamd(mBeautyHandles, "tooth_whiten", tooth_whiten);
-            fuItemSetParamd(mBeautyHandles, "is_beauty_on", is_beauty_on);
-            mNeedUpdateFUOptions = false;
+//        if (mNeedUpdateFUOptions) {
+//            fuItemSetParams(mBeautyHandles, "filter_name", const_cast<char*>(filter_name.c_str()));
+//            fuItemSetParamd(mBeautyHandles, "filter_level", filter_level);
+//            fuItemSetParamd(mBeautyHandles, "color_level", color_level);
+//            fuItemSetParamd(mBeautyHandles, "red_level", red_level);
+//            fuItemSetParamd(mBeautyHandles, "blur_level", blur_level);
+//            fuItemSetParamd(mBeautyHandles, "skin_detect", skin_detect);
+//            fuItemSetParamd(mBeautyHandles, "nonshin_blur_scale", nonshin_blur_scale);
+//            fuItemSetParamd(mBeautyHandles, "heavy_blur", heavy_blur);
+//            fuItemSetParamd(mBeautyHandles, "face_shape", face_shape);
+//            fuItemSetParamd(mBeautyHandles, "face_shape_level", face_shape_level);
+//            fuItemSetParamd(mBeautyHandles, "eye_enlarging", eye_enlarging);
+//            fuItemSetParamd(mBeautyHandles, "cheek_thinning", cheek_thinning);
+//            fuItemSetParamd(mBeautyHandles, "cheek_v", cheek_v);
+//            fuItemSetParamd(mBeautyHandles, "cheek_narrow", cheek_narrow);
+//            fuItemSetParamd(mBeautyHandles, "cheek_small", cheek_small);
+//            fuItemSetParamd(mBeautyHandles, "cheek_oval", cheek_oval);
+//            fuItemSetParamd(mBeautyHandles, "intensity_nose", intensity_nose);
+//            fuItemSetParamd(mBeautyHandles, "intensity_forehead", intensity_forehead);
+//            fuItemSetParamd(mBeautyHandles, "intensity_mouth", intensity_mouth);
+//            fuItemSetParamd(mBeautyHandles, "intensity_chin", intensity_chin);
+//            fuItemSetParamd(mBeautyHandles, "change_frames", change_frames);
+//            fuItemSetParamd(mBeautyHandles, "eye_bright", eye_bright);
+//            fuItemSetParamd(mBeautyHandles, "tooth_whiten", tooth_whiten);
+//            fuItemSetParamd(mBeautyHandles, "is_beauty_on", is_beauty_on);
+//            mNeedUpdateFUOptions = false;
+//        }
+        if(mNeedUpdateBundles) {
+            fuDestroyAllItems();
+            std::string assets_dir = folderPath + assets_dir_name + file_separator;
+            std::string g_fuDataDir = assets_dir;
+            items.reset(new int[bundles.size()]);
+            int i = 0;
+            int* items_ptr = items.get();
+            for(auto t=bundles.begin(); t!=bundles.end(); ++t){
+                std::vector<char> propData;
+                if (false == Utils::LoadBundle(g_fuDataDir + t->bundleName, propData)) {
+                    continue;
+                }
+    
+                int handle = fuCreateItemFromPackage(&propData[0], (int)propData.size());
+                items_ptr[i] = handle;
+                
+                //load options
+                Document d;
+                d.Parse(t->options.c_str());
+                for (Value::ConstMemberIterator itr = d.MemberBegin();
+                     itr != d.MemberEnd(); ++itr)
+                {
+                    const char* propertyName = itr->name.GetString();
+                    char mPropertyName[MAX_PROPERTY_NAME];
+                    strncpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
+                    const Value& propertyValue = itr->value;
+                    if(propertyValue.IsNumber()) {
+                        fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+                    } else if(propertyValue.IsString()){
+                        char mPropertyValue[MAX_PROPERTY_VALUE];
+                        strncpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
+                        fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                    }
+                }
+                
+                i++;
+            }
+            mNeedUpdateBundles = false;
         }
         
         // 4. make it beautiful
         unsigned char *in_ptr = yuvData(videoFrame);
-        int handle[] = { mBeautyHandles };
-        int handleSize = sizeof(handle) / sizeof(handle[0]);
         fuRenderItemsEx2(
                          FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
                          FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
                          videoFrame->width, videoFrame->height,
-                         mFrameID, handle, handleSize,
+                         mFrameID++, items.get(), (int)bundles.size(),
                          NAMA_RENDER_FEATURE_FULL, NULL);
         videoFrameData(videoFrame, in_ptr);
         delete in_ptr;
@@ -295,7 +320,6 @@ bool FaceUnityPlugin::setParameter(const char *param)
         }
         auth_package_size = authdata.Capacity();
         auth_package = new char[auth_package_size];
-        authdata.GetArray();
         for (int i = 0; i < auth_package_size; i++) {
             auth_package[i] = authdata[i].GetInt();
         }
@@ -347,6 +371,37 @@ bool FaceUnityPlugin::setParameter(const char *param)
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.tooth_whiten", tooth_whiten)
     READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.is_beauty_on", is_beauty_on)
 
+    if(d.HasMember("plugin.fu.bundles.load")) {
+        bundles.clear();
+        Value& bundlesData = d["plugin.fu.bundles.load"];
+        if(!bundlesData.IsArray()) {
+            return false;
+        }
+        
+        int bundleLength = bundlesData.Capacity();
+        for (int i = 0; i < bundleLength; i++) {
+            Value& bundleData = bundlesData[i];
+            if(!bundleData.HasMember("bundleName") || !bundleData.HasMember("bundleOptions")) {
+                return false;
+            }
+            Value& bundleName = bundleData["bundleName"];
+            if(!bundleName.IsString()){
+                return false;
+            }
+            FaceUnityBundle bundle;
+            bundle.bundleName = bundleName.GetString();
+            
+            StringBuffer sb;
+            Writer<StringBuffer> writer(sb);
+            bundleData["bundleOptions"].Accept(writer);
+            
+            bundle.options = sb.GetString();
+            
+            bundles.push_back(bundle);
+        }
+        mNeedUpdateBundles = true;
+    }
+    
     // reset mNeedUpdateFUOptions
     mNeedUpdateFUOptions = true;
     

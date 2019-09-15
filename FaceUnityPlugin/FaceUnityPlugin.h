@@ -12,13 +12,24 @@
 #include "IVideoFramePlugin.h"
 #include <string>
 #include <thread>
+#include <vector>
 #include "FUConfig.h"
+#include "common/rapidjson/document.h"
+#include "common/rapidjson/writer.h"
+
+
+using namespace rapidjson;
 
 enum FaceUnityPluginStatus
 {
     FACEUNITY_PLUGIN_STATUS_STOPPED = 0,
     FACEUNITY_PLUGIN_STATUS_STOPPING = 1,
     FACEUNITY_PLUGIN_STATUS_STARTED = 2
+};
+
+struct FaceUnityBundle {
+    std::string bundleName;
+    std::string options;
 };
 
 class FaceUnityPlugin : public IVideoFramePlugin
@@ -51,7 +62,10 @@ protected:
 #endif
     bool mNeedUpdateFUOptions = true;
     bool mLoaded = false;
+    bool mNeedUpdateBundles = false;
     FaceUnityPluginStatus status = FACEUNITY_PLUGIN_STATUS_STOPPED;
+    std::vector<FaceUnityBundle> bundles;
+    std::unique_ptr<int> items;
     
     
     std::string filter_name = "origin";
