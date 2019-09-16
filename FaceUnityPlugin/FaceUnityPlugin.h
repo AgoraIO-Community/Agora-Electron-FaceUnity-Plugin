@@ -66,32 +66,6 @@ protected:
     FaceUnityPluginStatus status = FACEUNITY_PLUGIN_STATUS_STOPPED;
     std::vector<FaceUnityBundle> bundles;
     std::unique_ptr<int> items;
-    
-    
-    std::string filter_name = "origin";
-    double filter_level = 1.0;
-    double color_level = 0.2;
-    double red_level = 0.5;
-    double blur_level = 6.0;
-    double skin_detect = 0.0;
-    double nonshin_blur_scale = 0.45;
-    double heavy_blur = 0;
-    double face_shape = 3;
-    double face_shape_level = 1.0;
-    double eye_enlarging = 0.5;
-    double cheek_thinning = 0.0;
-    double cheek_v = 0.0;
-    double cheek_narrow = 0.0;
-    double cheek_small = 0.0;
-    double cheek_oval = 0.0;
-    double intensity_nose = 0.0;
-    double intensity_forehead = 0.5;
-    double intensity_mouth = 0.5;
-    double intensity_chin = 0.0;
-    double change_frames = 0.0;
-    double eye_bright = 1.0;
-    double tooth_whiten = 1.0;
-    double is_beauty_on = 1.0;
 };
 
 #define READ_DOUBLE_VALUE_PARAM(d, name, newvalue) \
