@@ -30,6 +30,7 @@ enum FaceUnityPluginStatus
 struct FaceUnityBundle {
     std::string bundleName;
     std::string options;
+    bool updated;
 };
 
 class FaceUnityPlugin : public IVideoFramePlugin
@@ -60,9 +61,9 @@ protected:
 #else
     pthread_t previousThreadId;
 #endif
-    bool mNeedUpdateFUOptions = true;
     bool mLoaded = false;
-    bool mNeedUpdateBundles = false;
+    bool mNeedLoadBundles = true;
+    bool mNeedUpdateBundles = true;
     FaceUnityPluginStatus status = FACEUNITY_PLUGIN_STATUS_STOPPED;
     std::vector<FaceUnityBundle> bundles;
     std::unique_ptr<int> items;

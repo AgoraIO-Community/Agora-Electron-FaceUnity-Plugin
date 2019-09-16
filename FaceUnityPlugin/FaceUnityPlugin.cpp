@@ -145,14 +145,16 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         return false;
     }
     do {
-        // 0. check if need to clean up fu
+        // 1. check if need to clean up fu
         if (status == FACEUNITY_PLUGIN_STATUS_STOPPING) {
             fuDestroyAllItems();
             fuOnDeviceLost();
             fuOnCameraChange();
             mNamaInited = false;
-            mNeedUpdateFUOptions = true;
-            mNeedUpdateBundles = true;
+            //no need to update bundle option as bundles will be reloaded anyway
+            mNeedUpdateBundles = false;
+            //need to reload bundles once resume from stopping
+            mNeedLoadBundles = true;
             status = FACEUNITY_PLUGIN_STATUS_STOPPED;
         }
         
@@ -177,7 +179,7 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         }
         
         
-        if(mNeedUpdateBundles) {
+        if(mNeedLoadBundles) {
             fuDestroyAllItems();
             std::string assets_dir = folderPath + assets_dir_name + file_separator;
             std::string g_fuDataDir = assets_dir;
@@ -209,9 +211,52 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
                         char mPropertyValue[MAX_PROPERTY_VALUE];
                         strncpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
                         fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                    } else if(propertyValue.IsArray()){
+                        int valueLength = propertyValue.Capacity();
+                        double* values = new double[valueLength];
+                        for (int i = 0; i < valueLength; i++) {
+                            values[i] = propertyValue[i].GetDouble();
+                        }
                     }
                 }
                 
+                i++;
+            }
+            mNeedLoadBundles = false;
+        }
+        
+        if(mNeedUpdateBundles) {
+            int i = 0;
+            int* items_ptr = items.get();
+            for(auto t=bundles.begin(); t!=bundles.end(); ++t){
+                if(!t->updated) {
+                    continue;
+                }
+                //load options
+                Document d;
+                d.Parse(t->options.c_str());
+                for (Value::ConstMemberIterator itr = d.MemberBegin();
+                     itr != d.MemberEnd(); ++itr)
+                {
+                    const char* propertyName = itr->name.GetString();
+                    char mPropertyName[MAX_PROPERTY_NAME];
+                    strncpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
+                    const Value& propertyValue = itr->value;
+                    if(propertyValue.IsNumber()) {
+                        fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+                    } else if(propertyValue.IsString()){
+                        char mPropertyValue[MAX_PROPERTY_VALUE];
+                        strncpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
+                        fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                    } else if(propertyValue.IsArray()){
+                        int valueLength = propertyValue.Capacity();
+                        double* values = new double[valueLength];
+                        for (int i = 0; i < valueLength; i++) {
+                            values[i] = propertyValue[i].GetDouble();
+                        }
+                    }
+                }
+                t->updated = false;
                 i++;
             }
             mNeedUpdateBundles = false;
@@ -336,13 +381,36 @@ bool FaceUnityPlugin::setParameter(const char *param)
             
             bundles.push_back(bundle);
         }
+        mNeedLoadBundles = true;
+    }
+    
+    if(d.HasMember("plugin.fu.bundles.update")) {
+        Value& updateBundleData = d["plugin.fu.bundles.update"];
+        if(!updateBundleData.IsObject()) {
+            return false;
+        }
+        
+        if(!updateBundleData.HasMember("bundleName") || !updateBundleData.HasMember("bundleOptions")) {
+            return false;
+        }
+        
+        std::string bundleName = updateBundleData["bundleName"].GetString();
+        
+        for(auto t=bundles.begin(); t!=bundles.end(); ++t){
+            if(!bundleName.compare(t->bundleName)) {
+                StringBuffer sb;
+                Writer<StringBuffer> writer(sb);
+                updateBundleData["bundleOptions"].Accept(writer);
+                t->options = sb.GetString();
+                t->updated = true;
+            }
+        }
+        // reset mNeedUpdateBundles
         mNeedUpdateBundles = true;
     }
     
-    // reset mNeedUpdateFUOptions
-    mNeedUpdateFUOptions = true;
     
-    return false;
+    return true;
 }
 
 void FaceUnityPlugin::release()
@@ -350,7 +418,8 @@ void FaceUnityPlugin::release()
     fuOnDeviceLost();
     fuDestroyAllItems();
     mNamaInited = false;
-    mNeedUpdateFUOptions = true;
+    mNeedUpdateBundles = true;
+    mNeedLoadBundles = true;
     delete[] auth_package;
     folderPath = "";
 }
