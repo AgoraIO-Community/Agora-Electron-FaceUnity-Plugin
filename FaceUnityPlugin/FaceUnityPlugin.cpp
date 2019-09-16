@@ -152,6 +152,7 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
             fuOnCameraChange();
             mNamaInited = false;
             mNeedUpdateFUOptions = true;
+            mNeedUpdateBundles = true;
             status = FACEUNITY_PLUGIN_STATUS_STOPPED;
         }
         
