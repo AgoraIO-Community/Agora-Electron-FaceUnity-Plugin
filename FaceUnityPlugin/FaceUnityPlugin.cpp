@@ -203,13 +203,13 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
                 {
                     const char* propertyName = itr->name.GetString();
                     char mPropertyName[MAX_PROPERTY_NAME];
-                    strncpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
+                    strlcpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
                     const Value& propertyValue = itr->value;
                     if(propertyValue.IsNumber()) {
                         fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
                     } else if(propertyValue.IsString()){
                         char mPropertyValue[MAX_PROPERTY_VALUE];
-                        strncpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
+						strlcpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
                         fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
                     } else if(propertyValue.IsArray()){
                         int valueLength = propertyValue.Capacity();
@@ -240,13 +240,13 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
                 {
                     const char* propertyName = itr->name.GetString();
                     char mPropertyName[MAX_PROPERTY_NAME];
-                    strncpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
+                    strlcpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
                     const Value& propertyValue = itr->value;
                     if(propertyValue.IsNumber()) {
                         fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
                     } else if(propertyValue.IsString()){
                         char mPropertyValue[MAX_PROPERTY_VALUE];
-                        strncpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
+                        strlcpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
                         fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
                     } else if(propertyValue.IsArray()){
                         int valueLength = propertyValue.Capacity();
