@@ -146,7 +146,7 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
     }
     do {
         // 1. check if need to clean up fu
-        if (status == FACEUNITY_PLUGIN_STATUS_STOPPING) {
+        if (status == FACEUNITY_PLUGIN_STATUS_STOPPING && mNamaInited) {
             fuDestroyAllItems();
             fuOnDeviceLost();
             fuOnCameraChange();
@@ -264,12 +264,16 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         
         // 4. make it beautiful
         unsigned char *in_ptr = yuvData(videoFrame);
-        fuRenderItemsEx2(
-                         FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
-                         FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
-                         videoFrame->width, videoFrame->height,
-                         mFrameID++, items.get(), (int)bundles.size(),
-                         NAMA_RENDER_FEATURE_FULL, NULL);
+        try {
+            fuRenderItemsEx2(
+                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
+                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
+                             videoFrame->width, videoFrame->height,
+                             mFrameID++, items.get(), (int)bundles.size(),
+                             NAMA_RENDER_FEATURE_FULL, NULL);
+        } catch (...) {
+            
+        }
         videoFrameData(videoFrame, in_ptr);
         delete in_ptr;
     } while(false);
@@ -415,8 +419,10 @@ bool FaceUnityPlugin::setParameter(const char *param)
 
 void FaceUnityPlugin::release()
 {
-    fuOnDeviceLost();
-    fuDestroyAllItems();
+    if(mNamaInited) {
+        fuOnDeviceLost();
+        fuDestroyAllItems();
+    }
     mNamaInited = false;
     mNeedUpdateBundles = true;
     mNeedLoadBundles = true;
