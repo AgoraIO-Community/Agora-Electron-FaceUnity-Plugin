@@ -11,7 +11,7 @@
   "dependencies": {
     "@material-ui/core": "^4.0.2",
     "@material-ui/icons": "^4.1.0",
-    "agora-electron-sdk": "^2.3.4-hotfix.2",
+    "agora-electron-sdk": "2.3.4-hotfix.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "source-map-support": "^0.5.12"

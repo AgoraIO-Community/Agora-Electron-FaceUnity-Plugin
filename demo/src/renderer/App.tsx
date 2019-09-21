@@ -32,7 +32,7 @@ const defaultState: {
   appId: "",
   channel: "",
   token: undefined,
-  fuAuth: "[]"
+  fuAuth: ""
 };
 
 function App(props: any) {
@@ -88,11 +88,13 @@ function App(props: any) {
       const engine = new AgoraRtcEngine();
       engine.initialize(config.appId);
       engine.initializePluginManager()
-      engine.registerPlugin({
+      // @ts-ignore
+      let libPath = path.resolve(__static, 'fu-mac/libFaceUnityPlugin.dylib')
+      let result = engine.registerPlugin({
         id: 'fu-mac',
-        // @ts-ignore
-        path: path.resolve(__static, 'fu-mac/libFaceUnityPlugin.dylib')
+        path: libPath
       })
+      console.log(result)
       const plugin = engine.getPlugins().find(plugin => plugin.id === 'fu-mac')
       if (plugin) {
         plugin.setParameter(JSON.stringify({
@@ -101,7 +103,7 @@ function App(props: any) {
         plugin.setParameter(JSON.stringify({"plugin.fu.bundles.load": [{
           bundleName: "face_beautification.bundle",
           bundleOptions: {
-            "filter_name": "origin",
+            "filter_name": "tokyo",
             "filter_level": 1.0,
             "color_level": 0.2,
             "red_level": 0.5,
@@ -127,6 +129,42 @@ function App(props: any) {
             "is_beauty_on": 1.0
           }
         }]}))
+
+        let filter_level = 0.1;
+        setInterval(() => {
+          plugin.setParameter(JSON.stringify({"plugin.fu.bundles.load": [{
+            bundleName: "face_beautification.bundle",
+            bundleOptions: {
+              "filter_name": "tokyo",
+              "filter_level": filter_level,
+              "color_level": 0.2,
+              "red_level": 0.5,
+              "blur_level": 6.0,
+              "skin_detect": 0.0,
+              "nonshin_blur_scale": 0.45,
+              "heavy_blur": 0,
+              "face_shape": 3,
+              "face_shape_level": 1.0,
+              "eye_enlarging": 0.5,
+              "cheek_thinning": 0.0,
+              "cheek_v": 0.0,
+              "cheek_narrow": 0.0,
+              "cheek_small": 0.0,
+              "cheek_oval": 0.0,
+              "intensity_nose": 0.0,
+              "intensity_forehead": 0.5,
+              "intensity_mouth": 0.5,
+              "intensity_chin": 0.0,
+              "change_frames": 0.0,
+              "eye_bright": 1.0,
+              "tooth_whiten": 1.0,
+              "is_beauty_on": 1.0
+            }
+          }]}))
+          filter_level += 0.1
+        }, 1000)
+      } else {
+        console.error(`failed to load plugin at ${libPath}`)
       }
       setRtcEngine(engine)
       return engine
