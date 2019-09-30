@@ -15,6 +15,8 @@
 		033C829422FDB18F00ABB9EE /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033C828E22FDAFC900ABB9EE /* Utils.cpp */; };
 		03858EB022F9AE14000B3983 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03858EAF22F9AE14000B3983 /* OpenGL.framework */; };
 		0399D51222F9B6B7005B129E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0399D51122F9B6B7005B129E /* CoreMedia.framework */; };
+		03CE9E7B2341C02D00E3565F /* loguru.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03CE9E792341C02D00E3565F /* loguru.hpp */; };
+		03CE9E7C2341C02D00E3565F /* loguru.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03CE9E7A2341C02D00E3565F /* loguru.cpp */; };
 		03F0143022F9B71500ED4A1A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F0142F22F9B71500ED4A1A /* CoreVideo.framework */; };
 		03F0143222F9B83A00ED4A1A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F0143122F9B83A00ED4A1A /* CoreFoundation.framework */; };
 		03F0143422F9B86D00ED4A1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F0143322F9B86D00ED4A1A /* Foundation.framework */; };
@@ -67,6 +69,8 @@
 		03858EAF22F9AE14000B3983 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		03858EB122F9B5FA000B3983 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0399D51122F9B6B7005B129E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		03CE9E792341C02D00E3565F /* loguru.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = loguru.hpp; sourceTree = "<group>"; };
+		03CE9E7A2341C02D00E3565F /* loguru.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loguru.cpp; sourceTree = "<group>"; };
 		03D53AD022F98E4F0064D073 /* libFaceUnityPlugin.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libFaceUnityPlugin.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		03F0142F22F9B71500ED4A1A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		03F0143122F9B83A00ED4A1A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -98,6 +102,8 @@
 			children = (
 				033C82BC2302878100ABB9EE /* rapidjson */,
 				033C828C22FDAFC900ABB9EE /* FUConfig.h */,
+				03CE9E7A2341C02D00E3565F /* loguru.cpp */,
+				03CE9E792341C02D00E3565F /* loguru.hpp */,
 				033C828D22FDAFC900ABB9EE /* Utils.h */,
 				033C828E22FDAFC900ABB9EE /* Utils.cpp */,
 			);
@@ -215,6 +221,7 @@
 			files = (
 				033C828722FDAFB300ABB9EE /* FaceUnityPlugin.h in Headers */,
 				033C828A22FDAFC000ABB9EE /* IVideoFramePlugin.h in Headers */,
+				03CE9E7B2341C02D00E3565F /* loguru.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				033C828822FDAFB300ABB9EE /* FaceUnityPlugin.cpp in Sources */,
+				03CE9E7C2341C02D00E3565F /* loguru.cpp in Sources */,
 				033C829422FDB18F00ABB9EE /* Utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

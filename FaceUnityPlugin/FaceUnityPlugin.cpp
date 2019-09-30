@@ -54,7 +54,6 @@ PIXELFORMATDESCRIPTOR pfd = {
 
 FaceUnityPlugin::FaceUnityPlugin()
 {
-    
 }
 
 FaceUnityPlugin::~FaceUnityPlugin()
@@ -203,14 +202,19 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
                 {
                     const char* propertyName = itr->name.GetString();
                     char mPropertyName[MAX_PROPERTY_NAME];
+                    int result = -1;
                     strlcpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
                     const Value& propertyValue = itr->value;
                     if(propertyValue.IsNumber()) {
-                        fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+                        result = fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+
+                        LOG_F(INFO, "LoadPlugin: setting %s %f, result: %d", mPropertyName, propertyValue.GetDouble(), result);
                     } else if(propertyValue.IsString()){
                         char mPropertyValue[MAX_PROPERTY_VALUE];
 						strlcpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
-                        fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                        result = fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                        
+                        LOG_F(INFO, "LoadPlugin: setting %s %s, result: %d", mPropertyName, mPropertyValue, result);
                     } else if(propertyValue.IsArray()){
                         int valueLength = propertyValue.Capacity();
                         double* values = new double[valueLength];
@@ -242,12 +246,17 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
                     char mPropertyName[MAX_PROPERTY_NAME];
                     strlcpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
                     const Value& propertyValue = itr->value;
+                    int result = -1;
                     if(propertyValue.IsNumber()) {
-                        fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+                        result = fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+                        
+                        LOG_F(INFO, "UpdatePlugin: setting %s %f, result: %d", mPropertyName, propertyValue.GetDouble(), result);
                     } else if(propertyValue.IsString()){
                         char mPropertyValue[MAX_PROPERTY_VALUE];
                         strlcpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
-                        fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                        result = fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                        
+                        LOG_F(INFO, "UpdatePlugin: setting %s %s, result: %d", mPropertyName, mPropertyValue, result);
                     } else if(propertyValue.IsArray()){
                         int valueLength = propertyValue.Capacity();
                         double* values = new double[valueLength];
@@ -286,6 +295,9 @@ bool FaceUnityPlugin::load(const char *path)
     if(mLoaded) {
         return false;
     }
+    
+    
+    loguru::add_file("pluginfu.log", loguru::Append, loguru::Verbosity_MAX);
     
     std::string sPath(path);
     folderPath = sPath;
