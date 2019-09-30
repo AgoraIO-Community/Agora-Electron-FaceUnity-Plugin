@@ -16,7 +16,7 @@
 #include "FUConfig.h"
 #include "common/rapidjson/document.h"
 #include "common/rapidjson/writer.h"
-#include "loguru.hpp"
+#include "common/loguru.hpp"
 
 
 using namespace rapidjson;
