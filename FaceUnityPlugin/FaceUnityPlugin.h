@@ -12,13 +12,26 @@
 #include "IVideoFramePlugin.h"
 #include <string>
 #include <thread>
+#include <vector>
 #include "FUConfig.h"
+#include "common/rapidjson/document.h"
+#include "common/rapidjson/writer.h"
+#include "common/loguru.hpp"
+
+
+using namespace rapidjson;
 
 enum FaceUnityPluginStatus
 {
     FACEUNITY_PLUGIN_STATUS_STOPPED = 0,
     FACEUNITY_PLUGIN_STATUS_STOPPING = 1,
     FACEUNITY_PLUGIN_STATUS_STARTED = 2
+};
+
+struct FaceUnityBundle {
+    std::string bundleName;
+    std::string options;
+    bool updated;
 };
 
 class FaceUnityPlugin : public IVideoFramePlugin
@@ -49,35 +62,12 @@ protected:
 #else
     pthread_t previousThreadId;
 #endif
-    bool mNeedUpdateFUOptions = true;
     bool mLoaded = false;
+    bool mNeedLoadBundles = true;
+    bool mNeedUpdateBundles = true;
     FaceUnityPluginStatus status = FACEUNITY_PLUGIN_STATUS_STOPPED;
-    
-    
-    std::string filter_name = "origin";
-    double filter_level = 1.0;
-    double color_level = 0.2;
-    double red_level = 0.5;
-    double blur_level = 6.0;
-    double skin_detect = 0.0;
-    double nonshin_blur_scale = 0.45;
-    double heavy_blur = 0;
-    double face_shape = 3;
-    double face_shape_level = 1.0;
-    double eye_enlarging = 0.5;
-    double cheek_thinning = 0.0;
-    double cheek_v = 0.0;
-    double cheek_narrow = 0.0;
-    double cheek_small = 0.0;
-    double cheek_oval = 0.0;
-    double intensity_nose = 0.0;
-    double intensity_forehead = 0.5;
-    double intensity_mouth = 0.5;
-    double intensity_chin = 0.0;
-    double change_frames = 0.0;
-    double eye_bright = 1.0;
-    double tooth_whiten = 1.0;
-    double is_beauty_on = 1.0;
+    std::vector<FaceUnityBundle> bundles;
+    std::unique_ptr<int> items;
 };
 
 #define READ_DOUBLE_VALUE_PARAM(d, name, newvalue) \
@@ -88,5 +78,40 @@ if(d.HasMember(name)) { \
     } \
     newvalue = value.GetDouble(); \
 }
+
+#if defined(_WIN32)
+/*
+ * '_cups_strlcpy()' - Safely copy two strings.
+ */
+
+size_t					/* O - Length of string */
+strlcpy(char *dst,		/* O - Destination string */
+	const char *src,		/* I - Source string */
+	size_t size)		/* I - Size of destination string buffer */
+{
+	size_t	srclen;			/* Length of source string */
+
+
+	/*
+	* Figure out how much room is needed...
+	*/
+	size--;
+
+	srclen = strlen(src);
+
+	/*
+	* Copy the appropriate amount...
+	*/
+
+	if (srclen > size)
+		srclen = size;
+
+	memcpy(dst, src, srclen);
+	dst[srclen] = '\0';
+
+	return (srclen);
+}
+
+#endif
 
 #endif /* FaceUnityPlugin_h */

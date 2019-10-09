@@ -13,7 +13,6 @@
 #include "Utils.h"
 #include <stdlib.h>
 #include <iostream>
-#include "common/rapidjson/document.h"
 #ifdef _WIN32
 #include "windows.h"
 #pragma comment(lib, "nama.lib")
@@ -27,12 +26,11 @@
 
 
 #define MAX_PATH 512
+#define MAX_PROPERTY_NAME 256
+#define MAX_PROPERTY_VALUE 512
 
 static bool mNamaInited = false;
 static int mFrameID = 0;
-static int mBeautyHandles = 0;
-
-using namespace rapidjson;
 
 #if defined(_WIN32)
 PIXELFORMATDESCRIPTOR pfd = {
@@ -56,7 +54,6 @@ PIXELFORMATDESCRIPTOR pfd = {
 
 FaceUnityPlugin::FaceUnityPlugin()
 {
-    
 }
 
 FaceUnityPlugin::~FaceUnityPlugin()
@@ -147,14 +144,16 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         return false;
     }
     do {
-        // 0. check if need to clean up fu
-        if (status == FACEUNITY_PLUGIN_STATUS_STOPPING) {
+        // 1. check if need to clean up fu
+        if (status == FACEUNITY_PLUGIN_STATUS_STOPPING && mNamaInited) {
             fuDestroyAllItems();
             fuOnDeviceLost();
             fuOnCameraChange();
-            fuDestroyLibData();
             mNamaInited = false;
-            mNeedUpdateFUOptions = true;
+            //no need to update bundle option as bundles will be reloaded anyway
+            mNeedUpdateBundles = false;
+            //need to reload bundles once resume from stopping
+            mNeedLoadBundles = true;
             status = FACEUNITY_PLUGIN_STATUS_STOPPED;
         }
         
@@ -166,7 +165,6 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         // 2. initialize if not yet done
         if (!mNamaInited) {
             //load nama and initialize
-            std::string sub = "agora_node_ext.node";
             std::string assets_dir = folderPath + assets_dir_name + file_separator;
             std::string g_fuDataDir = assets_dir;
             std::vector<char> v3data;
@@ -176,59 +174,115 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
             initOpenGL();
             //CheckGLContext();
             fuSetup(reinterpret_cast<float*>(&v3data[0]), v3data.size(), NULL, auth_package, auth_package_size);
-            
-            std::vector<char> propData;
-            if (false == Utils::LoadBundle(g_fuDataDir + g_faceBeautification, propData)) {
-                std::cout << "load face beautification data failed." << std::endl;
-                break;
-            }
-            std::cout << "load face beautification data." << std::endl;
-            
-            mBeautyHandles = fuCreateItemFromPackage(&propData[0], propData.size());
             mNamaInited = true;
         }
         
         
-        // 3. beauty params
-        // check if options needs to be updated
-        if (mNeedUpdateFUOptions) {
-            fuItemSetParams(mBeautyHandles, "filter_name", const_cast<char*>(filter_name.c_str()));
-            fuItemSetParamd(mBeautyHandles, "filter_level", filter_level);
-            fuItemSetParamd(mBeautyHandles, "color_level", color_level);
-            fuItemSetParamd(mBeautyHandles, "red_level", red_level);
-            fuItemSetParamd(mBeautyHandles, "blur_level", blur_level);
-            fuItemSetParamd(mBeautyHandles, "skin_detect", skin_detect);
-            fuItemSetParamd(mBeautyHandles, "nonshin_blur_scale", nonshin_blur_scale);
-            fuItemSetParamd(mBeautyHandles, "heavy_blur", heavy_blur);
-            fuItemSetParamd(mBeautyHandles, "face_shape", face_shape);
-            fuItemSetParamd(mBeautyHandles, "face_shape_level", face_shape_level);
-            fuItemSetParamd(mBeautyHandles, "eye_enlarging", eye_enlarging);
-            fuItemSetParamd(mBeautyHandles, "cheek_thinning", cheek_thinning);
-            fuItemSetParamd(mBeautyHandles, "cheek_v", cheek_v);
-            fuItemSetParamd(mBeautyHandles, "cheek_narrow", cheek_narrow);
-            fuItemSetParamd(mBeautyHandles, "cheek_small", cheek_small);
-            fuItemSetParamd(mBeautyHandles, "cheek_oval", cheek_oval);
-            fuItemSetParamd(mBeautyHandles, "intensity_nose", intensity_nose);
-            fuItemSetParamd(mBeautyHandles, "intensity_forehead", intensity_forehead);
-            fuItemSetParamd(mBeautyHandles, "intensity_mouth", intensity_mouth);
-            fuItemSetParamd(mBeautyHandles, "intensity_chin", intensity_chin);
-            fuItemSetParamd(mBeautyHandles, "change_frames", change_frames);
-            fuItemSetParamd(mBeautyHandles, "eye_bright", eye_bright);
-            fuItemSetParamd(mBeautyHandles, "tooth_whiten", tooth_whiten);
-            fuItemSetParamd(mBeautyHandles, "is_beauty_on", is_beauty_on);
-            mNeedUpdateFUOptions = false;
+        if(mNeedLoadBundles) {
+            fuDestroyAllItems();
+            std::string assets_dir = folderPath + assets_dir_name + file_separator;
+            std::string g_fuDataDir = assets_dir;
+            items.reset(new int[bundles.size()]);
+            int i = 0;
+            int* items_ptr = items.get();
+            for(auto t=bundles.begin(); t!=bundles.end(); ++t){
+                std::vector<char> propData;
+                if (false == Utils::LoadBundle(g_fuDataDir + t->bundleName, propData)) {
+                    continue;
+                }
+    
+                int handle = fuCreateItemFromPackage(&propData[0], (int)propData.size());
+                items_ptr[i] = handle;
+                
+                //load options
+                Document d;
+                d.Parse(t->options.c_str());
+                for (Value::ConstMemberIterator itr = d.MemberBegin();
+                     itr != d.MemberEnd(); ++itr)
+                {
+                    const char* propertyName = itr->name.GetString();
+                    char mPropertyName[MAX_PROPERTY_NAME];
+                    int result = -1;
+                    strlcpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
+                    const Value& propertyValue = itr->value;
+                    if(propertyValue.IsNumber()) {
+                        result = fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+
+                        LOG_F(INFO, "LoadPlugin: setting %s %f, result: %d", mPropertyName, propertyValue.GetDouble(), result);
+                    } else if(propertyValue.IsString()){
+                        char mPropertyValue[MAX_PROPERTY_VALUE];
+						strlcpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
+                        result = fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                        
+                        LOG_F(INFO, "LoadPlugin: setting %s %s, result: %d", mPropertyName, mPropertyValue, result);
+                    } else if(propertyValue.IsArray()){
+                        int valueLength = propertyValue.Capacity();
+                        double* values = new double[valueLength];
+                        for (int i = 0; i < valueLength; i++) {
+                            values[i] = propertyValue[i].GetDouble();
+                        }
+                    }
+                }
+                
+                i++;
+            }
+            mNeedLoadBundles = false;
+        }
+        
+        if(mNeedUpdateBundles) {
+            int i = 0;
+            int* items_ptr = items.get();
+            for(auto t=bundles.begin(); t!=bundles.end(); ++t){
+                if(!t->updated) {
+                    continue;
+                }
+                //load options
+                Document d;
+                d.Parse(t->options.c_str());
+                for (Value::ConstMemberIterator itr = d.MemberBegin();
+                     itr != d.MemberEnd(); ++itr)
+                {
+                    const char* propertyName = itr->name.GetString();
+                    char mPropertyName[MAX_PROPERTY_NAME];
+                    strlcpy(mPropertyName, propertyName, MAX_PROPERTY_NAME);
+                    const Value& propertyValue = itr->value;
+                    int result = -1;
+                    if(propertyValue.IsNumber()) {
+                        result = fuItemSetParamd(items_ptr[i], mPropertyName, propertyValue.GetDouble());
+                        
+                        LOG_F(INFO, "UpdatePlugin: setting %s %f, result: %d", mPropertyName, propertyValue.GetDouble(), result);
+                    } else if(propertyValue.IsString()){
+                        char mPropertyValue[MAX_PROPERTY_VALUE];
+                        strlcpy(mPropertyValue, propertyValue.GetString(), MAX_PROPERTY_VALUE);
+                        result = fuItemSetParams(items_ptr[i], mPropertyName, mPropertyValue);
+                        
+                        LOG_F(INFO, "UpdatePlugin: setting %s %s, result: %d", mPropertyName, mPropertyValue, result);
+                    } else if(propertyValue.IsArray()){
+                        int valueLength = propertyValue.Capacity();
+                        double* values = new double[valueLength];
+                        for (int i = 0; i < valueLength; i++) {
+                            values[i] = propertyValue[i].GetDouble();
+                        }
+                    }
+                }
+                t->updated = false;
+                i++;
+            }
+            mNeedUpdateBundles = false;
         }
         
         // 4. make it beautiful
         unsigned char *in_ptr = yuvData(videoFrame);
-        int handle[] = { mBeautyHandles };
-        int handleSize = sizeof(handle) / sizeof(handle[0]);
-        fuRenderItemsEx2(
-                         FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
-                         FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
-                         videoFrame->width, videoFrame->height,
-                         mFrameID, handle, handleSize,
-                         NAMA_RENDER_FEATURE_FULL, NULL);
+        try {
+            fuRenderItemsEx2(
+                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
+                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
+                             videoFrame->width, videoFrame->height,
+                             mFrameID++, items.get(), (int)bundles.size(),
+                             NAMA_RENDER_FEATURE_FULL, NULL);
+        } catch (...) {
+            
+        }
         videoFrameData(videoFrame, in_ptr);
         delete in_ptr;
     } while(false);
@@ -241,6 +295,9 @@ bool FaceUnityPlugin::load(const char *path)
     if(mLoaded) {
         return false;
     }
+    
+    
+    loguru::add_file("pluginfu.log", loguru::Append, loguru::Verbosity_MAX);
     
     std::string sPath(path);
     folderPath = sPath;
@@ -295,19 +352,9 @@ bool FaceUnityPlugin::setParameter(const char *param)
         }
         auth_package_size = authdata.Capacity();
         auth_package = new char[auth_package_size];
-        authdata.GetArray();
         for (int i = 0; i < auth_package_size; i++) {
             auth_package[i] = authdata[i].GetInt();
         }
-    }
-    
-    if(d.HasMember("plugin.fu.param.filter_name")) {
-        Value& value = d["plugin.fu.param.filter_name"];
-        if(!value.IsString()) {
-            return false;
-        }
-        std::string sName(value.GetString());
-        filter_name = sName;
     }
     
     if(d.HasMember("plugin.fu.switch_camera")) {
@@ -321,44 +368,76 @@ bool FaceUnityPlugin::setParameter(const char *param)
             status = FACEUNITY_PLUGIN_STATUS_STARTED;
         }
     }
-    
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.filter_level", filter_level)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.color_level", color_level)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.red_level", red_level)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.blur_level", blur_level)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.skin_detect", skin_detect)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.nonshin_blur_scale", nonshin_blur_scale)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.heavy_blur", heavy_blur)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.face_shape", face_shape)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.face_shape_level", face_shape_level)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.eye_enlarging", eye_enlarging)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_thinning", cheek_thinning)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_v", cheek_v)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_narrow", cheek_narrow)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_small", cheek_small)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.cheek_oval", cheek_oval)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_nose", intensity_nose)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_forehead", intensity_forehead)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_mouth", intensity_mouth)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_forehead", intensity_forehead)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.intensity_chin", intensity_chin)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.change_frames", change_frames)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.eye_bright", eye_bright)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.tooth_whiten", tooth_whiten)
-    READ_DOUBLE_VALUE_PARAM(d, "plugin.fu.param.is_beauty_on", is_beauty_on)
 
-    // reset mNeedUpdateFUOptions
-    mNeedUpdateFUOptions = true;
+    if(d.HasMember("plugin.fu.bundles.load")) {
+        bundles.clear();
+        Value& bundlesData = d["plugin.fu.bundles.load"];
+        if(!bundlesData.IsArray()) {
+            return false;
+        }
+        
+        int bundleLength = bundlesData.Capacity();
+        for (int i = 0; i < bundleLength; i++) {
+            Value& bundleData = bundlesData[i];
+            if(!bundleData.HasMember("bundleName") || !bundleData.HasMember("bundleOptions")) {
+                return false;
+            }
+            Value& bundleName = bundleData["bundleName"];
+            if(!bundleName.IsString()){
+                return false;
+            }
+            FaceUnityBundle bundle;
+            bundle.bundleName = bundleName.GetString();
+            
+            StringBuffer sb;
+            Writer<StringBuffer> writer(sb);
+            bundleData["bundleOptions"].Accept(writer);
+            
+            bundle.options = sb.GetString();
+            
+            bundles.push_back(bundle);
+        }
+        mNeedLoadBundles = true;
+    }
     
-    return false;
+    if(d.HasMember("plugin.fu.bundles.update")) {
+        Value& updateBundleData = d["plugin.fu.bundles.update"];
+        if(!updateBundleData.IsObject()) {
+            return false;
+        }
+        
+        if(!updateBundleData.HasMember("bundleName") || !updateBundleData.HasMember("bundleOptions")) {
+            return false;
+        }
+        
+        std::string bundleName = updateBundleData["bundleName"].GetString();
+        
+        for(auto t=bundles.begin(); t!=bundles.end(); ++t){
+            if(!bundleName.compare(t->bundleName)) {
+                StringBuffer sb;
+                Writer<StringBuffer> writer(sb);
+                updateBundleData["bundleOptions"].Accept(writer);
+                t->options = sb.GetString();
+                t->updated = true;
+            }
+        }
+        // reset mNeedUpdateBundles
+        mNeedUpdateBundles = true;
+    }
+    
+    
+    return true;
 }
 
 void FaceUnityPlugin::release()
 {
-    fuOnDeviceLost();
-    fuDestroyAllItems();
+    if(mNamaInited) {
+        fuOnDeviceLost();
+        fuDestroyAllItems();
+    }
     mNamaInited = false;
-    mNeedUpdateFUOptions = true;
+    mNeedUpdateBundles = true;
+    mNeedLoadBundles = true;
     delete[] auth_package;
     folderPath = "";
 }
