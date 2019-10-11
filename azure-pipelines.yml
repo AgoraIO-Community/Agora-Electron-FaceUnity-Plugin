@@ -21,5 +21,5 @@ steps:
   - script: |
       xcodebuild -project FaceUnityPlugin/mac/FaceUnityPlugin.xcodeproj
     displayName: 'Build Plugin'
-  - publish: $(System.DefaultWorkingDirectory)/build
-    artifact: FaceUnityPlugin
+  - publish: '$(Pipeline.Workspace)'
+    artifact: 'FaceUnityPlugin'
