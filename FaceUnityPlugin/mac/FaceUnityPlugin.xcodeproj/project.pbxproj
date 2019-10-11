@@ -11,8 +11,8 @@
 		033C828722FDAFB300ABB9EE /* FaceUnityPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 033C828522FDAFB200ABB9EE /* FaceUnityPlugin.h */; };
 		033C828822FDAFB300ABB9EE /* FaceUnityPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033C828622FDAFB300ABB9EE /* FaceUnityPlugin.cpp */; };
 		033C828A22FDAFC000ABB9EE /* IVideoFramePlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 033C828922FDAFC000ABB9EE /* IVideoFramePlugin.h */; };
-		033C829322FDB14C00ABB9EE /* libnama.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 033C829222FDB14C00ABB9EE /* libnama.a */; };
 		033C829422FDB18F00ABB9EE /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033C828E22FDAFC900ABB9EE /* Utils.cpp */; };
+		0366949B2350EA4E000193B6 /* libnama.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0366949A2350EA4E000193B6 /* libnama.a */; };
 		03858EB022F9AE14000B3983 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03858EAF22F9AE14000B3983 /* OpenGL.framework */; };
 		0399D51222F9B6B7005B129E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0399D51122F9B6B7005B129E /* CoreMedia.framework */; };
 		03CE9E7B2341C02D00E3565F /* loguru.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03CE9E792341C02D00E3565F /* loguru.hpp */; };
@@ -30,7 +30,6 @@
 		033C828C22FDAFC900ABB9EE /* FUConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FUConfig.h; sourceTree = "<group>"; };
 		033C828D22FDAFC900ABB9EE /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		033C828E22FDAFC900ABB9EE /* Utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
-		033C829222FDB14C00ABB9EE /* libnama.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnama.a; path = ../FULive/mac/lib/libnama.a; sourceTree = "<group>"; };
 		033C82BD2302878100ABB9EE /* fwd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fwd.h; sourceTree = "<group>"; };
 		033C82BE2302878100ABB9EE /* memorystream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = memorystream.h; sourceTree = "<group>"; };
 		033C82BF2302878100ABB9EE /* reader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
@@ -66,6 +65,7 @@
 		033C82DF2302878100ABB9EE /* pointer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pointer.h; sourceTree = "<group>"; };
 		033C82E12302878100ABB9EE /* inttypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = inttypes.h; sourceTree = "<group>"; };
 		033C82E22302878100ABB9EE /* stdint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdint.h; sourceTree = "<group>"; };
+		0366949A2350EA4E000193B6 /* libnama.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnama.a; path = ../FULive/mac/libnama.a; sourceTree = "<group>"; };
 		03858EAF22F9AE14000B3983 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		03858EB122F9B5FA000B3983 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0399D51122F9B6B7005B129E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -87,7 +87,7 @@
 				03F0143422F9B86D00ED4A1A /* Foundation.framework in Frameworks */,
 				03F0143222F9B83A00ED4A1A /* CoreFoundation.framework in Frameworks */,
 				03F0143022F9B71500ED4A1A /* CoreVideo.framework in Frameworks */,
-				033C829322FDB14C00ABB9EE /* libnama.a in Frameworks */,
+				0366949B2350EA4E000193B6 /* libnama.a in Frameworks */,
 				0399D51222F9B6B7005B129E /* CoreMedia.framework in Frameworks */,
 				0315A29122F9B69200B10F6C /* AVFoundation.framework in Frameworks */,
 				03858EB022F9AE14000B3983 /* OpenGL.framework in Frameworks */,
@@ -197,7 +197,7 @@
 				033C828622FDAFB300ABB9EE /* FaceUnityPlugin.cpp */,
 				033C828522FDAFB200ABB9EE /* FaceUnityPlugin.h */,
 				033C828922FDAFC000ABB9EE /* IVideoFramePlugin.h */,
-				033C829222FDB14C00ABB9EE /* libnama.a */,
+				0366949A2350EA4E000193B6 /* libnama.a */,
 				033C828B22FDAFC900ABB9EE /* common */,
 				03D53AD122F98E4F0064D073 /* Products */,
 				03858EAE22F9AE14000B3983 /* Frameworks */,
