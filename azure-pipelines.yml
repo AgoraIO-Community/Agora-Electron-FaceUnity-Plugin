@@ -13,7 +13,7 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'build'
-    sdk: 'macos'
+    sdk: 'macosx10.10'
     scheme: ''
     configuration: 'Release'
     xcWorkspacePath: 'FaceUnityPlugin/mac/FaceUnityPlugin.xcodeproj'
