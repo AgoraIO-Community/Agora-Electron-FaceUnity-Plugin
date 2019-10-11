@@ -15,7 +15,8 @@ steps:
     displayName: 'Download FaceUnity'
   - script: |
       unzip -u FaceUnity.zip
-      mv FaceUnity-SDK-Mac FaceUnityPlugin/FULive
+      mkdir -p FaceUnityPlugin/FULive
+      mv FaceUnity-SDK-Mac FaceUnityPlugin/FULive/mac
     displayName: 'Prepare FaceUnity'
   - script: |
       xcodebuild -project FaceUnityPlugin/mac/FaceUnityPlugin.xcodeproj
