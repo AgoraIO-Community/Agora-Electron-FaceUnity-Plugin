@@ -10,6 +10,6 @@ pool:
   vmImage: 'macos-latest'
 
 steps:
-- script: |
-  xcodebuild -project FaceUnityPlugin/mac/FaceUnityPlugin.xcodeproj
-  displayName: 'Build Plugin'
+  - script: |
+      xcodebuild -project FaceUnityPlugin/mac/FaceUnityPlugin.xcodeproj
+    displayName: 'Build Plugin'
