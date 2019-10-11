@@ -12,7 +12,9 @@ pool:
 steps:
   - script: |
       curl https://github.com/Faceunity/FULiveDemoMac/releases/download/v6.2.0/FaceUnity-SDK-Mac-v6.2.0.zip -o FaceUnity.zip
-    displayName: 'Download FaceUnity'
+      unzip -u FaceUnity.zip
+      mv FaceUnity-SDK-Mac FaceUnityPlugin/FULive
+    displayName: 'Prepare FaceUnity'
   - script: |
       xcodebuild -project FaceUnityPlugin/mac/FaceUnityPlugin.xcodeproj
     displayName: 'Build Plugin'
