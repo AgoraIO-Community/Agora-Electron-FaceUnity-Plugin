@@ -36,3 +36,6 @@ jobs:
         msbuildArchitecture: 'x86'
         platform: 'x86'
         configuration: 'Release'
+    - bash: './package.sh'
+    - publish: 'FaceUnityPlugin/win/fu-win.zip'
+      artifact: 'FaceUnityPlugin'
