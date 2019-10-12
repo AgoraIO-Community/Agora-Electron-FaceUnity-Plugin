@@ -24,7 +24,7 @@ steps:
   - publish: 'FaceUnityPlugin/mac/build/Release'
     artifact: 'FaceUnityPlugin'
   - script: |
-      cd FaceUnityPlugin/mac/build && zip -r fu-mac.zip Release
+      cd FaceUnityPlugin/mac/build && mv ../FULive/mac/Resources ./Release/assets && zip -r fu-mac.zip Release
     displayName: 'Zip Plugin'
   - task: GitHubRelease@0
     inputs:
