@@ -27,3 +27,5 @@ steps:
     inputs:
       gitHubConnection: 'grelease'
       repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
+      tagSource: manual
+      tag: $(releaseVersion)
