@@ -11,21 +11,10 @@ pool:
 
 steps:
   - script: |
-      wget https://github.com/Faceunity/FULiveDemoMac/releases/download/v6.2.0/FaceUnity-SDK-Mac-v6.2.0.zip -O FaceUnity.zip
-    displayName: 'Download FaceUnity'
-  - script: |
-      unzip -u FaceUnity.zip
-      mkdir -p FaceUnityPlugin/FULive
-      mv FaceUnity-SDK-Mac FaceUnityPlugin/FULive/mac
-    displayName: 'Prepare FaceUnity'
-  - script: |
-      xcodebuild -project FaceUnityPlugin/mac/FaceUnityPlugin.xcodeproj
-    displayName: 'Build Plugin'
-  - publish: 'FaceUnityPlugin/mac/build/Release'
+      cd FaceUnityPlugin/mac && ./release.sh
+    displayName: 'Running build script'
+  - publish: 'FaceUnityPlugin/mac/build/fu-mac.zip'
     artifact: 'FaceUnityPlugin'
-  - script: |
-      cd FaceUnityPlugin/mac/build && mv ../FULive/mac/Resources ./Release/assets && zip -r fu-mac.zip Release
-    displayName: 'Zip Plugin'
   - task: GitHubRelease@0
     inputs:
       gitHubConnection: 'grelease'
