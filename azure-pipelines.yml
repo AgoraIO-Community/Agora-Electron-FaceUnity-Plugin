@@ -32,5 +32,5 @@ jobs:
     - task: VSBuild@1
       inputs:
         solution: 'FaceUnityPlugin\win\FaceUnityPlugin.sln'
-        vsVersion: '15.0'
+        vsVersion: '17.0'
         msbuildArchitecture: 'x86'
