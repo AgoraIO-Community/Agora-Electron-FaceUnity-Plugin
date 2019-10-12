@@ -29,4 +29,4 @@ jobs:
 
   steps:
     - script: |
-      cd FaceUnityPlugin/win && ./release.sh
+        cd FaceUnityPlugin/win && ./release.sh
