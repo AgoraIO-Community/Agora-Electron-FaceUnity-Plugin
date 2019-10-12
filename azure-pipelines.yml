@@ -27,4 +27,4 @@ steps:
     inputs:
       gitHubConnection: 'grelease'
       repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
-      assets: 'FaceUnityPlugin/mac/build/Release'
+      assets: 'FaceUnityPlugin/mac/build/*'
