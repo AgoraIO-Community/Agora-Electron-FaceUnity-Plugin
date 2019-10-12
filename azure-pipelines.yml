@@ -28,4 +28,5 @@ jobs:
     vmImage: 'vs2015-win2012r2'
 
   steps:
-    - script: echo hello from windows
+    - script: |
+      cd FaceUnityPlugin/win && ./release.sh
