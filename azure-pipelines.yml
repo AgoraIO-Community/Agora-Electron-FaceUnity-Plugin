@@ -23,8 +23,11 @@ steps:
     displayName: 'Build Plugin'
   - publish: 'FaceUnityPlugin/mac/build/Release'
     artifact: 'FaceUnityPlugin'
+  - script: |
+      zip FaceUnityPlugin/mac/fu-mac.zip FaceUnityPlugin/mac/build
+    displayName: 'Zip Plugin'
   - task: GitHubRelease@0
     inputs:
       gitHubConnection: 'grelease'
       repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
-      assets: '$(System.DefaultWorkingDirectory)/**/*'
+      assets: '$(System.DefaultWorkingDirectory)/FaceUnityPlugin/mac/fu-mac.zip'
