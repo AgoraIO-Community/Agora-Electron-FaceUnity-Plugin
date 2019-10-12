@@ -35,3 +35,4 @@ jobs:
         vsVersion: '15.0'
         msbuildArchitecture: 'x86'
         platform: 'x86'
+        configuration: 'Release'
