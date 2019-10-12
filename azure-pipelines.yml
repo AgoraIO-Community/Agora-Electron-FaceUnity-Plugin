@@ -6,17 +6,26 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'macos-latest'
+jobs:
+- job: 'mac'
+  pool:
+    vmImage: 'macos-latest'
 
-steps:
-  - script: |
-      cd FaceUnityPlugin/mac && ./release.sh
-    displayName: 'Running build script'
-  - publish: 'FaceUnityPlugin/mac/build/fu-mac.zip'
-    artifact: 'FaceUnityPlugin'
-  - task: GitHubRelease@0
-    inputs:
-      gitHubConnection: 'grelease'
-      repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
-      assets: '$(System.DefaultWorkingDirectory)/FaceUnityPlugin/mac/build/fu-mac.zip'
+  steps:
+    - script: |
+        cd FaceUnityPlugin/mac && ./release.sh
+      displayName: 'Running build script'
+    - publish: 'FaceUnityPlugin/mac/build/fu-mac.zip'
+      artifact: 'FaceUnityPlugin'
+    - task: GitHubRelease@0
+      inputs:
+        gitHubConnection: 'grelease'
+        repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
+        assets: '$(System.DefaultWorkingDirectory)/FaceUnityPlugin/mac/build/fu-mac.zip'
+
+- job: 'win'
+  pool:
+    vmImage: 'vs2015-win2012r2'
+
+  steps:
+    - script: echo hello from windows
