@@ -9,9 +9,6 @@ trigger:
 pool:
   vmImage: 'macos-latest'
 
-variables:
-  tagName: '$(tagName)'
-
 steps:
   - script: |
       wget https://github.com/Faceunity/FULiveDemoMac/releases/download/v6.2.0/FaceUnity-SDK-Mac-v6.2.0.zip -O FaceUnity.zip
@@ -30,5 +27,3 @@ steps:
     inputs:
       gitHubConnection: 'grelease'
       repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
-      tagSource: manual
-      tag: $(tagName)
