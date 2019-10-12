@@ -16,7 +16,7 @@ jobs:
         cd FaceUnityPlugin/mac && ./release.sh
       displayName: 'Running build script'
     - publish: 'FaceUnityPlugin/mac/build/fu-mac.zip'
-      artifact: 'FaceUnityPlugin'
+      artifact: 'FaceUnityPluginMac'
     - task: GitHubRelease@0
       inputs:
         gitHubConnection: 'grelease'
@@ -38,4 +38,4 @@ jobs:
         configuration: 'Release'
     - bash: 'cd FaceUnityPlugin/win && ./package.sh'
     - publish: 'FaceUnityPlugin/win/fu-win.zip'
-      artifact: 'FaceUnityPlugin'
+      artifact: 'FaceUnityPluginWin'
