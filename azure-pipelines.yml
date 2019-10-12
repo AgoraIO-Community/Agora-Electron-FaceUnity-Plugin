@@ -28,4 +28,4 @@ steps:
       gitHubConnection: 'grelease'
       repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
       tagSource: manual
-      tag: '$(tagName)'
+      tag: '${{tagName}}'
