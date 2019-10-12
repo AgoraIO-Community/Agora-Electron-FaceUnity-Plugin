@@ -25,5 +25,5 @@ steps:
     artifact: 'FaceUnityPlugin'
   - task: GitHubRelease@0
     inputs:
-      gitHubConnection: 'AgoraIO-Community'
+      gitHubConnection: 'grelease'
       repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
