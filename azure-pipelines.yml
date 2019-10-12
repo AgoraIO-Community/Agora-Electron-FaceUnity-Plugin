@@ -25,7 +25,7 @@ jobs:
 
 - job: 'win'
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'vs2017-win2016'
 
   steps:
     - bash: 'cd FaceUnityPlugin/win && ./release.sh'
