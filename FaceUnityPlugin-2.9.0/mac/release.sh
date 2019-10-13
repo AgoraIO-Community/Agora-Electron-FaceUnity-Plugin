@@ -7,4 +7,4 @@ rm -rf build
 xcodebuild -project FaceUnityPlugin.xcodeproj
 cd build
 mv ../../FULive/mac/Resources ./Release/assets
-zip -r fu-mac.zip Release
+zip -r fu-mac-290.zip Release
