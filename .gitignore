@@ -1,2 +1,5 @@
+.vscode
+xcshareddata
+.vs
 .DS_Store
 xcuserdata
