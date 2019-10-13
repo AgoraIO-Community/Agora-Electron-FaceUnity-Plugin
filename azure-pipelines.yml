@@ -17,11 +17,6 @@ jobs:
       displayName: 'Running build script'
     - publish: 'FaceUnityPlugin/mac/build/fu-mac.zip'
       artifact: 'FaceUnityPluginMac'
-    - task: GitHubRelease@0
-      inputs:
-        gitHubConnection: 'grelease'
-        repositoryName: 'AgoraIO-Community/Agora-Electron-FaceUnity-Plugin'
-        assets: '$(System.DefaultWorkingDirectory)/FaceUnityPlugin/mac/build/fu-mac.zip'
 
 - job: 'win'
   pool:
