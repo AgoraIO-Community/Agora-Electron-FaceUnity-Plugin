@@ -132,7 +132,7 @@ function App(props: any) {
 
         let filter_level = 0.1;
         setInterval(() => {
-          plugin.setParameter(JSON.stringify({"plugin.fu.bundles.load": [{
+          plugin.setParameter(JSON.stringify({"plugin.fu.bundle.update": {
             bundleName: "face_beautification.bundle",
             bundleOptions: {
               "filter_name": "tokyo",
@@ -160,7 +160,7 @@ function App(props: any) {
               "tooth_whiten": 1.0,
               "is_beauty_on": 1.0
             }
-          }]}))
+          }}))
           filter_level += 0.1
         }, 1000)
       } else {
