@@ -14,9 +14,14 @@ jobs:
   steps:
     - script: |
         cd FaceUnityPlugin/mac && ./release.sh
-      displayName: 'Running build script'
+      displayName: 'Build FaceUnityPlugin'
+    - script: |
+        cd FaceUnityPlugin-2.9.0/mac && ./release.sh
+      displayName: 'Build FaceUnityPlugin 2.9.0'
     - publish: 'FaceUnityPlugin/mac/build/fu-mac.zip'
       artifact: 'FaceUnityPluginMac'
+    - publish: 'FaceUnityPlugin-2.9.0/mac/build/fu-mac.zip'
+      artifact: 'FaceUnityPluginMac290'
 
 - job: 'win'
   pool:
