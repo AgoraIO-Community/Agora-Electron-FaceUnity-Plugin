@@ -20,7 +20,7 @@ jobs:
       displayName: 'Build FaceUnityPlugin 2.9.0'
     - publish: 'FaceUnityPlugin/mac/build/fu-mac.zip'
       artifact: 'FaceUnityPluginMac'
-    - publish: 'FaceUnityPlugin-2.9.0/mac/build/fu-mac.zip'
+    - publish: 'FaceUnityPlugin-2.9.0/mac/build/fu-mac-290.zip'
       artifact: 'FaceUnityPluginMac290'
 
 - job: 'win'
@@ -49,5 +49,5 @@ jobs:
     - bash: 'cd FaceUnityPlugin-2.9.0/win && ./package.sh'
     - publish: 'FaceUnityPlugin/win/fu-win.zip'
       artifact: 'FaceUnityPluginWin'
-    - publish: 'FaceUnityPlugin-2.9.0/win/fu-win.zip'
+    - publish: 'FaceUnityPlugin-2.9.0/win/fu-win-290.zip'
       artifact: 'FaceUnityPluginWin290'
