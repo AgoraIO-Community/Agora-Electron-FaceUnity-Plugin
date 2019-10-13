@@ -34,7 +34,7 @@ plugin.setParameter(JSON.stringify({"plugin.fu.bundles.load": [{
 }]}))
 ```
 
-### plugin.fu.bundles.load
+### plugin.fu.bundles.update
 update one face unity bundle option, the bundle has to be loaded first. using this api is more efficient if you need to frequently update plugin options. for which options the bundle has, please look at face unity documentation instead
 ```
 plugin.setParameter(JSON.stringify({"plugin.fu.bundles.update": {
