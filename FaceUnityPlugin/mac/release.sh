@@ -6,5 +6,5 @@ mv FaceUnity-SDK-Mac ../FULive/mac
 rm -rf build
 xcodebuild -project FaceUnityPlugin.xcodeproj
 cd build
-mv ../../FULive/mac/Resources ./Release/assets
+mv ../../FULive/mac/Resources ./Release/.
 zip -r fu-mac.zip Release
