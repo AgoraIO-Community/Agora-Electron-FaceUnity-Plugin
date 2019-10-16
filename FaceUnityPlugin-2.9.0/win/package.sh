@@ -3,4 +3,4 @@ curl -L -o face_beautification.bundle https://github.com/Faceunity/FULivePC/raw/
 cp -rf ./face_beautification.bundle ./Release/assets/.
 cp -rf ./FULive/win/Windows/win32_release/* ./Release/.
 rm -rf FaceUnityPlugin
-7z a -r -tzip fu-win.zip ./Release
+7z a -r -tzip fu-win-290.zip ./Release
