@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- dev/*
 
 jobs:
 - job: 'mac'
