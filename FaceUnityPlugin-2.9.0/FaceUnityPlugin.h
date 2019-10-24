@@ -62,9 +62,9 @@ protected:
     char* auth_package;
     int auth_package_size;
 #if defined(_WIN32)
-    int videoFrameThreadId;
+    int previousThreadId;
 #else
-    pthread_t previousThreadId;
+    uint64_t previousThreadId;
 #endif
     bool mLoaded = false;
     bool mNeedLoadBundles = true;

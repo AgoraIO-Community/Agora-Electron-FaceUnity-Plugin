@@ -167,22 +167,21 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         return false;
     }
     do {
-        // 1. check if need to clean up fu
-        if (status == FACEUNITY_PLUGIN_STATUS_STOPPING && mNamaInited) {
-            fuDestroyAllItems();
+#if defined(_WIN32)
+        int tid = GetCurrentThreadId();
+#else
+        uint64_t tid;
+        pthread_threadid_np(NULL, &tid);
+#endif
+        if(tid != previousThreadId && mNamaInited) {
             fuOnDeviceLost();
-            fuOnCameraChange();
             mNamaInited = false;
             //no need to update bundle option as bundles will be reloaded anyway
             mNeedUpdateBundles = false;
             //need to reload bundles once resume from stopping
             mNeedLoadBundles = true;
-            status = FACEUNITY_PLUGIN_STATUS_STOPPED;
         }
-        
-        if(status == FACEUNITY_PLUGIN_STATUS_STOPPED) {
-            break;
-        }
+        previousThreadId = tid;
         
         
         // 2. initialize if not yet done
