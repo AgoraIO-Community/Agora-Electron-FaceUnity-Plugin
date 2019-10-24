@@ -43,9 +43,3 @@ plugin.setParameter(JSON.stringify({"plugin.fu.bundles.update": {
     }
 }}))
 ```
-
-### plugin.fu.switch_camera
-call this api to set switch_camera to true before you switch channel when face unity is on. listen to firstLocalVideoFrame event to set switch_camera to false
-```
-plugin.setParameter(JSON.stringify({"plugin.fu.switch_camera": true}))
-```
