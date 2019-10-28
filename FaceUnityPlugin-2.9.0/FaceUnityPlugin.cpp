@@ -74,7 +74,13 @@ bool FaceUnityPlugin::initOpenGL()
 		GetModuleHandleA(NULL), NULL);
 	HDC hgldc = GetDC(hw);
 	int spf = ChoosePixelFormat(hgldc, &pfd);
+    if(spf == 0) {
+        return false;
+    }
 	int ret = SetPixelFormat(hgldc, spf, &pfd);
+    if(!ret) {
+        return false;
+    }
 	HGLRC hglrc = wglCreateContext(hgldc);
 	wglMakeCurrent(hgldc, hglrc);
 
@@ -193,7 +199,9 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
             if (false == Utils::LoadBundle(g_fuDataDir + g_v3Data, v3data)) {
                 break;
             }
-            initOpenGL();
+            if (false == initOpenGL()) {
+                break;
+            }
             //CheckGLContext();
             fuSetup(reinterpret_cast<float*>(&v3data[0]), v3data.size(), NULL, auth_package, auth_package_size);
             mNamaInited = true;
