@@ -2,7 +2,7 @@ wget https://github.com/Faceunity/FULiveDemoMac/releases/download/v6.4.0/FaceUni
 unzip -u FaceUnity.zip
 mkdir -p ../FULive
 rm -rf ../FULive/mac
-mv FaceUnity-SDK-Mac ../FULive/mac
+mv FaceUnity-SDK-Mac-v6.4.0 ../FULive/mac
 rm -rf build
 xcodebuild -project FaceUnityPlugin.xcodeproj
 cd build
