@@ -308,7 +308,7 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         }
         
         int err = fuGetSystemError();
-        if(err == 0){
+        if(err != 0){
             LOG_F(INFO, "fuSystemError: %d", err);
         }
         
