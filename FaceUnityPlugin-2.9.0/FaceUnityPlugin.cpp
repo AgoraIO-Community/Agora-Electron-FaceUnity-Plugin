@@ -219,6 +219,7 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
             }
             //CheckGLContext();
             fuSetup(reinterpret_cast<float*>(&v3data[0]), v3data.size(), NULL, auth_package, auth_package_size);
+            LOG_F(INFO, "FaceUnitySDK: %s", fuGetVersion());
             mNamaInited = true;
         }
         
@@ -328,6 +329,12 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
         } catch (...) {
             
         }
+        
+        int err = fuGetSystemError();
+        if(err == 0){
+            LOG_F(INFO, "fuSystemError: %d", err);
+        }
+        
         videoFrameData(videoFrame, in_ptr);
         delete in_ptr;
     } while(false);
