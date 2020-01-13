@@ -143,6 +143,21 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
     if(auth_package_size == 0){
         return false;
     }
+
+    if(mReleased) {
+        if(mNamaInited) {
+            fuDestroyAllItems();
+            mNamaInited = false;
+            //no need to update bundle option as bundles will be reloaded anyway
+            mNeedUpdateBundles = false;
+            //need to reload bundles once resume from stopping
+            mNeedLoadBundles = true;
+        }
+
+        LOG_F(INFO, "FU Plugin Marked as released, skip");
+        return true;
+    }
+
     do {
 #if defined(_WIN32)
         int tid = GetCurrentThreadId();
@@ -309,6 +324,7 @@ bool FaceUnityPlugin::load(const char *path)
     folderPath = sPath;
     
     mLoaded = true;
+    mReleased = false;
     status = FACEUNITY_PLUGIN_STATUS_STARTED;
     return true;
 }
@@ -438,13 +454,7 @@ bool FaceUnityPlugin::setParameter(const char *param)
 
 void FaceUnityPlugin::release()
 {
-    if(mNamaInited) {
-        fuOnDeviceLost();
-        fuDestroyAllItems();
-    }
-    mNamaInited = false;
-    mNeedUpdateBundles = true;
-    mNeedLoadBundles = true;
+    mReleased = true;
     delete[] auth_package;
     folderPath = "";
 }
