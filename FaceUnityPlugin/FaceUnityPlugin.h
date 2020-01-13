@@ -66,6 +66,7 @@ protected:
     bool mLoaded = false;
     bool mNeedLoadBundles = true;
     bool mNeedUpdateBundles = true;
+    bool mReleased = false;
     FaceUnityPluginStatus status = FACEUNITY_PLUGIN_STATUS_STOPPED;
     std::vector<FaceUnityBundle> bundles;
     std::unique_ptr<int> items;
