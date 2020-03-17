@@ -1,0 +1,4 @@
+ipch
+Debug
+Release
+*.VC.db
