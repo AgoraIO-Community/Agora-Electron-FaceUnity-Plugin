@@ -1,5 +1,6 @@
-.vscode
-xcshareddata
 .vs
-.DS_Store
+.vscode
 xcuserdata
+.DS_Store
+FULive
+build
