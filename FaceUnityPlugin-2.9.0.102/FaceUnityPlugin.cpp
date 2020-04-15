@@ -54,14 +54,14 @@ PIXELFORMATDESCRIPTOR pfd = {
     0u, 0u };
 #endif
 
-FaceUnityPlugin::FaceUnityPlugin()
+FaceUnityPlugin::FaceUnityPlugin():cacheYuvVideoFramePtr(NULL)
 {
     
 }
 
 FaceUnityPlugin::~FaceUnityPlugin()
 {
-    
+    releaseCacheBuffer(cacheYuvVideoFramePtr);
 }
 
 bool FaceUnityPlugin::initOpenGL()
@@ -110,17 +110,14 @@ bool FaceUnityPlugin::initOpenGL()
 	return true;
 }
 
-unsigned char *FaceUnityPlugin::yuvData(VideoPluginFrame* videoFrame)
+void FaceUnityPlugin::yuvData(VideoPluginFrame* srcVideoFrame, VideoPluginFrame* dstVideoFrame)
 {
-    int ysize = videoFrame->yStride * videoFrame->height;
-    int usize = videoFrame->uStride * videoFrame->height / 2;
-    int vsize = videoFrame->vStride * videoFrame->height / 2;
-    unsigned char *temp = (unsigned char *)malloc(ysize + usize + vsize);
-    
-    memcpy(temp, videoFrame->yBuffer, ysize);
-    memcpy(temp + ysize, videoFrame->uBuffer, usize);
-    memcpy(temp + ysize + usize, videoFrame->vBuffer, vsize);
-    return (unsigned char *)temp;
+    int ysize = srcVideoFrame->yStride * srcVideoFrame->height;
+    int usize = srcVideoFrame->uStride * srcVideoFrame->height / 2;
+    int vsize = srcVideoFrame->vStride * srcVideoFrame->height / 2;
+    memcpy(static_cast<unsigned char*>(dstVideoFrame->buffer), srcVideoFrame->yBuffer, ysize);
+    memcpy(static_cast<unsigned char*>(dstVideoFrame->buffer) + ysize, srcVideoFrame->uBuffer, usize);
+    memcpy(static_cast<unsigned char*>(dstVideoFrame->buffer) + ysize + usize, srcVideoFrame->vBuffer, vsize);
 }
 
 int FaceUnityPlugin::yuvSize(VideoPluginFrame* videoFrame)
@@ -129,6 +126,58 @@ int FaceUnityPlugin::yuvSize(VideoPluginFrame* videoFrame)
     int usize = videoFrame->uStride * videoFrame->height / 2;
     int vsize = videoFrame->vStride * videoFrame->height / 2;
     return ysize + usize + vsize;
+}
+
+
+void FaceUnityPlugin::initCacheVideoFrame(VideoPluginFrame* dstVideoFrame, VideoPluginFrame* srcVideoFrame)
+{
+    dstVideoFrame->width = srcVideoFrame->width;
+    dstVideoFrame->height = srcVideoFrame->height;
+    dstVideoFrame->yStride = srcVideoFrame->yStride;
+    dstVideoFrame->uStride = srcVideoFrame->uStride;
+    dstVideoFrame->vStride = srcVideoFrame->vStride;
+    dstVideoFrame->buffer = malloc(yuvSize(dstVideoFrame));
+}
+
+void FaceUnityPlugin::checkCreateVideoFrame(VideoPluginFrame* videoFrame)
+{
+    if (!cacheYuvVideoFramePtr)
+    {
+        cacheYuvVideoFramePtr = new VideoPluginFrame();
+        initCacheVideoFrame(cacheYuvVideoFramePtr, videoFrame);
+        return;
+    }
+
+    // if video resolution change, we need to resize videoPtr
+    if (cacheYuvVideoFramePtr->width != videoFrame->width
+    || cacheYuvVideoFramePtr->height != videoFrame->height
+    || cacheYuvVideoFramePtr->yStride != videoFrame->yStride
+    || cacheYuvVideoFramePtr->uStride != videoFrame->uStride
+    || cacheYuvVideoFramePtr->vStride != videoFrame->vStride)
+    {
+        releaseCacheBuffer(cacheYuvVideoFramePtr);
+        cacheYuvVideoFramePtr = new VideoPluginFrame();
+        initCacheVideoFrame(cacheYuvVideoFramePtr, videoFrame);
+    }
+}
+
+void FaceUnityPlugin::memsetCacheBuffer(VideoPluginFrame* videoFrame)
+{
+    memset(videoFrame->buffer, 0, sizeof(videoFrame->buffer));
+}
+
+void FaceUnityPlugin::releaseCacheBuffer(VideoPluginFrame* videoFrame)
+{
+    if (videoFrame)
+    {
+        if (videoFrame->buffer)
+        {
+            delete videoFrame->buffer;
+            videoFrame->buffer = NULL;
+        }
+        delete videoFrame;
+        videoFrame = NULL;
+    }
 }
 
 void FaceUnityPlugin::videoFrameData(VideoPluginFrame* videoFrame, unsigned char *yuvData)
@@ -316,13 +365,13 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
             }
             mNeedUpdateBundles = false;
         }
-        
         // 4. make it beautiful
-        unsigned char *in_ptr = yuvData(videoFrame);
+        checkCreateVideoFrame(videoFrame);
+        yuvData(videoFrame, cacheYuvVideoFramePtr);
         try {
             fuRenderItemsEx2(
-                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
-                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(in_ptr),
+                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(cacheYuvVideoFramePtr->buffer),
+                             FU_FORMAT_I420_BUFFER, reinterpret_cast<int*>(cacheYuvVideoFramePtr->buffer),
                              videoFrame->width, videoFrame->height,
                              mFrameID++, items.get(), (int)bundles.size(),
                              NAMA_RENDER_FEATURE_FULL, NULL);
@@ -335,8 +384,8 @@ bool FaceUnityPlugin::onPluginCaptureVideoFrame(VideoPluginFrame *videoFrame)
             LOG_F(INFO, "fuSystemError: %d", err);
         }
         
-        videoFrameData(videoFrame, in_ptr);
-        delete in_ptr;
+        videoFrameData(videoFrame, reinterpret_cast<unsigned char*>(cacheYuvVideoFramePtr->buffer));
+        memsetCacheBuffer(cacheYuvVideoFramePtr);
     } while(false);
     
     return true;
@@ -493,6 +542,7 @@ int FaceUnityPlugin::release()
     mReleased = true;
     delete[] auth_package;
     folderPath = "";
+    delete this;
     return 0;
 }
 

@@ -55,10 +55,13 @@ public:
     virtual int release() override;
 protected:
     bool initOpenGL();
-    void videoFrameData(VideoPluginFrame* videoFrame, unsigned char *yuvData);
-    unsigned char *yuvData(VideoPluginFrame* videoFrame);
+    void videoFrameData(VideoPluginFrame* videoFrame, unsigned char* yuvData);
+    void yuvData(VideoPluginFrame* srcVideoFrame, VideoPluginFrame* dstVideoFrame);
     int yuvSize(VideoPluginFrame* videoFrame);
-    
+    void checkCreateVideoFrame(VideoPluginFrame* videoFrame);
+    void initCacheVideoFrame(VideoPluginFrame* dstVideoFrame, VideoPluginFrame* srcVideoFrame);
+    void memsetCacheBuffer(VideoPluginFrame* videoFrame);
+    void releaseCacheBuffer(VideoPluginFrame* videoFrame);
     std::string folderPath;
     char* auth_package;
     int auth_package_size;
@@ -74,6 +77,7 @@ protected:
     FaceUnityPluginStatus status = FACEUNITY_PLUGIN_STATUS_STOPPED;
     std::vector<FaceUnityBundle> bundles;
     std::unique_ptr<int> items;
+    VideoPluginFrame* cacheYuvVideoFramePtr;
 };
 
 #define READ_DOUBLE_VALUE_PARAM(d, name, newvalue) \
