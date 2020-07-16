@@ -48,7 +48,19 @@ jobs:
         platform: 'x86'
         configuration: 'Release'
     - bash: 'cd FaceUnityPlugin-2.9.0/win && ./package.sh'
+  
+    - bash: 'cd FaceUnityPlugin-2.9.0.102/win && ./release.sh'
+    - task: VSBuild@1
+      inputs:
+        solution: 'FaceUnityPlugin-2.9.0.102\win\FaceUnityPlugin.sln'
+        vsVersion: '15.0'
+        msbuildArchitecture: 'x86'
+        platform: 'x86'
+        configuration: 'Release'
+    - bash: 'cd FaceUnityPlugin-2.9.0.102/win && ./package.sh'
     - publish: 'FaceUnityPlugin/win/fu-win.zip'
       artifact: 'FaceUnityPluginWin'
     - publish: 'FaceUnityPlugin-2.9.0/win/fu-win-290.zip'
       artifact: 'FaceUnityPluginWin290'
+    - publish: 'FaceUnityPlugin-2.9.0.102/win/fu-win-290-102.zip'
+      artifact: 'FaceUnityPluginWin290102'
