@@ -38,7 +38,7 @@ jobs:
         platform: 'x86'
         configuration: 'Release'
     - bash: 'cd FaceUnityPlugin/win && ./package.sh'
-    
+
     - bash: 'cd FaceUnityPlugin-2.9.0/win && ./release.sh'
     - task: VSBuild@1
       inputs:
@@ -48,7 +48,7 @@ jobs:
         platform: 'x86'
         configuration: 'Release'
     - bash: 'cd FaceUnityPlugin-2.9.0/win && ./package.sh'
-  
+
     - bash: 'cd FaceUnityPlugin-2.9.0.102/win && ./release.sh'
     - task: VSBuild@1
       inputs:

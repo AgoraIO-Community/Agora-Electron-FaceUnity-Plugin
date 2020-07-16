@@ -4,4 +4,4 @@ cp -rf ./face_beautification.bundle ./Release/assets/.
 cp -rf ../FULive/win/Windows/win32_release/* ./Release/.
 rm -rf FaceUnityPlugin
 rm -rf ../FULive/win
-7z a -r -tzip fu-win-290.zip ./Release
+7z a -r -tzip fu-win-290-102.zip ./Release
