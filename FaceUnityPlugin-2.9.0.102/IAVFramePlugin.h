@@ -1,10 +1,9 @@
 #pragma once
-
 #include <stdint.h>
-#ifdef AGORA_VIDEO_PLUGIN_EXPORT
-#define AGORA_VIDEO_PLUGIN_API extern "C" __declspec(dllexport)
+#if defined(_WIN32)
+#define EXPORTS __declspec(dllexport)
 #else
-#define AGORA_VIDEO_PLUGIN_API __declspec(dllimport)
+#define EXPORTS
 #endif
 
 struct AudioPluginFrame {
@@ -42,7 +41,7 @@ struct VideoPluginFrame {
     void* yBuffer;  //Y data buffer
     void* uBuffer;  //U data buffer
     void* vBuffer;  //V data buffer
-	void* buffer;
+    void* buffer;
     int rotation; // rotation of this frame (0, 90, 180, 270)
     int64_t renderTimeMs;
     int avsync_type;
@@ -70,4 +69,5 @@ public:
 };
 
 typedef IAVFramePlugin* (*createAgoraAVFramePlugin)();
-extern "C" AGORA_VIDEO_PLUGIN_API IAVFramePlugin* createAVFramePlugin();
+
+extern "C" EXPORTS IAVFramePlugin* createAVFramePlugin();
